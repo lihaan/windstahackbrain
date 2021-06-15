@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Text, View, Button, TextInput, StyleSheet } from "react-native";
 import { useFonts, JosefinSans_300Light } from '@expo-google-fonts/josefin-sans';
-import { Rating } from '../components/Rating';
+import { Rating } from '../components/Rating.js';
 import { useFocusEffect } from '@react-navigation/native'
 
 // just a random homescreen in place
@@ -11,38 +11,39 @@ export default function HomeScreen({ navigation, route }) {
   });
 
   const [nickname, setNickname] = useState("User");
+  const [answer, setAnswer] = useState("")
 
   function checkName() {
     return route.params?.nickname ? route.params.nickname : nickname
   }
-  
-  const PLACEHOLDER_NAME = "Li Han";
 
   const QUESTIONS = [
     {
-      question: `Hey ${PLACEHOLDER_NAME}, how are you feeling today?`,
-      format: `${PLACEHOLDER_NAME} is feeling`,
-      input: <Rating></Rating>
+      question: `Hey ${nickname}, how are you feeling today?`,
+      format: `${nickname} is feeling`,
+      input: <Rating handlePress={handlePress} answer={answer}></Rating>
     },
     {
-      question: `What's up ${PLACEHOLDER_NAME}! What song is currently stuck in your head?`,
-      format: `${PLACEHOLDER_NAME} can't stop listening to`,
-      input: <Rating></Rating>
+      question: `What's up ${nickname}! What song is currently stuck in your head?`,
+      format: `${nickname} can't stop listening to`,
+      input: <TextInput style={styles.input} placeholder="Mr. Brightside perhaps?" onChangeText={text => setAnswer(text)} value={answer} />
     },
     {
-      question: `Hello ${PLACEHOLDER_NAME}, any cravings now?`,
-      format: `${PLACEHOLDER_NAME} really needs some`,
-      input: <Rating></Rating>
+      question: `Hello ${nickname}, any cravings now?`,
+      format: `${nickname} really needs some`,
+      input: <TextInput style={styles.input} placeholder="Mala Tang?" onChangeText={text => setAnswer(text)} value={answer} />
     },
   ]
 
-  const [input, SetInput] = useState()
   const [curQuestionIndex, setCurQuestionIndex] = useState(Math.floor(Math.random() * QUESTIONS.length))
 
+  function handlePress(input) {
+    setAnswer(input)
+  }
   
   if (!fontsLoaded) {
     return (<View style={styles.container}>
-    <Text style={styles.question}>Loading</Text>
+    <Text style={styles.text}>Loading</Text>
   </View>);
   }
 
@@ -50,7 +51,6 @@ export default function HomeScreen({ navigation, route }) {
     <View style={styles.container}>
       <Text style={styles.question}>{QUESTIONS[curQuestionIndex].question}</Text>
       {QUESTIONS[curQuestionIndex].input}
-      <Text style={styles.text}>Hello {checkName()}!</Text>
       
       <Button
         title="Chat now!"
@@ -97,5 +97,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontFamily: 'JosefinSans_300Light'
+  },
+  input: {
+    marginTop: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: 'rgba(210, 151, 37, 0.17)',
+    width: '100%',
+    fontSize: 16,
   }
 });
