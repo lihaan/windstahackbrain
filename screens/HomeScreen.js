@@ -1,9 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import { Text, View, Button, TextInput, StyleSheet } from "react-native";
 
 // just a random homescreen in place
 export default function HomeScreen({ navigation }) {
-  // state = { name: '' }
+  // let [name, setName] = useState('Jackalyn')
 
   return (
     <View style={styles.container}>
