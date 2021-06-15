@@ -17,8 +17,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode="none" mode="modal">
-        <Stack.Screen name="Helplines" component={HelpScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Helplines" component={HelpScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
         <Stack.Screen name="Loading" component={LoadingScreen} />
         <Stack.Screen name="Edit Nickname" component={EditNickname} />

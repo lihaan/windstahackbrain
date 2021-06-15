@@ -40,7 +40,7 @@ export default function ChatScreen({ route }) {
     ]);
   }, []);
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback((messages = [(value = { promptScreen })]) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
