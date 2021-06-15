@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function loadingScreen() {
+export default function MatchingScreen() {
   const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
