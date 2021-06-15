@@ -1,20 +1,34 @@
-import React from 'react';
-import { Text, View, StyleSheet, Button, TextInput } from 'react-native';
+import React, {useState, useEffect} from "react";
+import { Text, View, StyleSheet, Button, TextInput, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from './HomeScreen';
 
 export default function EditNickname({navigation}) {
+  const [nickname, setNickname] = useState("")
+
   return (
     <View style={styles.container}>
       <Text style={styles.words}> Set your Nickname! WIP </Text>
       <TextInput
         style={styles.textInput}
-      />
-      <Text style={styles.current}> Current Nickname:  </Text>
-      <Button onPress={() => navigation.goBack()} title="Submit" />
-      <Button onPress={() => navigation.goBack()} title="Cancel" />
-    </View>
+        value={nickname}
+        onChangeText={(newNickname) => setNickname(newNickname)}
+      ></TextInput>
+      <TouchableOpacity
+         onPress={() => navigation.navigate("Home", {nickname})}
+         style={[styles.button, styles.submitButton]}
+       >
+         <Text style={styles.buttonText}>Submit</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         onPress={() => navigation.goBack()}
+         style={[styles.button, styles.cancelButton]}
+       >
+         <Text style={styles.buttonText}>Cancel</Text>
+       </TouchableOpacity>
+     </View>
+
   );
 }
 
@@ -28,24 +42,41 @@ const styles = StyleSheet.create({
   words: {
       fontSize: 30,
       fontWeight: "bold",
-      top: -250
+      top: -200
   },
   current: {
     fontSize: 15,
     top: -200
 },
-  textInput: {
-    borderColor: "black",
-    padding: 15,
-    backgroundColor: "white",
-    marginTop: 20,
-    width: "70%",
-    top: -220
+ textInput: {
+   margin: 20,
+   borderWidth: 1,
+   width: "80%",
+   padding: 10,
+   borderColor: "#ccc",
+   backgroundColor: "white",
+   top: -180,
+ },
+
+  buttons: {
+    flexDirection: "row",
   },
-  cancelButton: {
-    
+  button: {
+    padding: 10,
+    margin: 5,
+  },
+  buttonText: {
+    fontWeight: "bold",
+    color: "white",
   },
   submitButton: {
-
+    backgroundColor: "orange",
+    top: -150,
+    left: -60
   },
-});
+  cancelButton: {
+    backgroundColor: "red",
+    top: -194.5,
+    left: 60
+  },
+ });
