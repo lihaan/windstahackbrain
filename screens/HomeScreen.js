@@ -71,9 +71,9 @@ export default function HomeScreen({ navigation, route }) {
         }}
       ></Button>
       <Button
-        title="loading"
+        title="view matching screen"
         onPress={() => {
-          navigation.navigate("Matchmaking loading");
+          navigation.navigate("Matchmaking");
         }}
       ></Button>
     </View>

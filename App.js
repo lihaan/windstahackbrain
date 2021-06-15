@@ -22,7 +22,7 @@ export default function App() {
         <Stack.Screen name="Helplines" component={HelpScreen} />
         <Stack.Screen name="Edit Nickname" component={EditNickname} />
         <Stack.Screen name="promptScreen" component={promptScreen} />
-        <Stack.Screen name="MatchmakingScreen" component={MatchingScreen} />
+        <Stack.Screen name="Matchmaking" component={MatchingScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
         <Stack.Screen name="reportUserScreen" component={reportUserScreen} />
       </Stack.Navigator>
