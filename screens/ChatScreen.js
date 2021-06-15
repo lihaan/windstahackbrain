@@ -40,7 +40,7 @@ export default function ChatScreen({ route }) {
     ]);
   }, []);
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback((messages = [(value = { promptScreen })]) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
@@ -50,8 +50,8 @@ export default function ChatScreen({ route }) {
     return (
       <View style={styles.systemMessageContainer}>
         <Text style={styles.systemMessageText}>
-          You've been matched with ___ ;) You may start chatting! ___ is feeling
-          __
+          You've been matched with ___ ;) You may start chatting!{"\n"}
+          ___ is feeling __
         </Text>
       </View>
     );
@@ -59,14 +59,14 @@ export default function ChatScreen({ route }) {
 
   return (
     <GiftedChat
-      messages={messages}
-      onSend={(messages) => onSend(messages)}
+      messages={ messages }
+      onSend={ messages => onSend(messages) }
       user={{
         _id: 1,
         // name: 'Jack',
       }}
-      showAvatarForEveryMessage={true}
-      renderSystemMessage={customSystemMessage}
+      showAvatarForEveryMessage={ true }
+      renderSystemMessage={ customSystemMessage }
     />
   );
 }
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   systemMessageContainer: {
     // width: 50,
     // height: 50,
-    flex: 0.9,
+    flex: 1,
     backgroundColor: "#fff6c8",
     justifyContent: "center",
     alignItems: "center",

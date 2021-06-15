@@ -2,11 +2,11 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
-import HelpScreen from "./screens/HelpScreen";
 import ChatScreen from "./screens/ChatScreen";
-import HomeScreen from "./screens/HomeScreen";
-import LoadingScreen from "./screens/loadingScreen";
 import EditNickname from "./screens/EditNickname";
+import HelpScreen from "./screens/HelpScreen";
+import HomeScreen from "./screens/HomeScreen";
+import LoadingScreen from "./screens/LoadingScreen";
 import MatchingScreen from "./screens/MatchingScreen";
 import reportUserScreen from "./screens/reportUserScreen";
 import promptScreen from "./screens/promptScreen";
