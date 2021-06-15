@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Button, TextInput, StyleSheet } from "react-native";
+import { Text, View, Button, StyleSheet } from "react-native";
 
 // just a random homescreen in place
 export default function HomeScreen({ navigation }) {
