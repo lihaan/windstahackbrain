@@ -1,6 +1,4 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HelpScreen from "./screens/HelpScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -11,14 +9,6 @@ import EditNickname from "./screens/EditNickname";
 import loadingScreen from "./screens/loadingScreen";
 import reportUserScreen from "./screens/reportUserScreen";
 import promptScreen from "./screens/promptScreen";
-import {
-  Modal,
-  Portal,
-  Text,
-  Button,
-  Provider,
-  StyleSheet,
-} from "react-native-paper";
 
 const Stack = createStackNavigator();
 
