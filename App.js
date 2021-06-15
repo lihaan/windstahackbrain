@@ -7,7 +7,6 @@ import ChatScreen from "./screens/ChatScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import EditNickname from "./screens/EditNickname";
-import loadingScreen from "./screens/loadingScreen";
 import reportUserScreen from "./screens/reportUserScreen";
 import promptScreen from "./screens/promptScreen";
 
