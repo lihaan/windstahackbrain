@@ -2,11 +2,11 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
-import HelpScreen from "./screens/HelpScreen";
 import ChatScreen from "./screens/ChatScreen";
+import EditNickname from "./screens/EditNickname";
+import HelpScreen from "./screens/HelpScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LoadingScreen from "./screens/LoadingScreen";
-import EditNickname from "./screens/EditNickname";
 import MatchingScreen from "./screens/MatchingScreen";
 import reportUserScreen from "./screens/reportUserScreen";
 import promptScreen from "./screens/promptScreen";
@@ -23,7 +23,7 @@ export default function App() {
         <Stack.Screen name="Loading" component={LoadingScreen} />
         <Stack.Screen name="Edit Nickname" component={EditNickname} />
         <Stack.Screen name="promptScreen" component={promptScreen} />
-        <Stack.Screen name="Matchmaking loading" component={MatchingScreen} />
+        <Stack.Screen name="MatchmakingScreen" component={MatchingScreen} />
         <Stack.Screen name="reportUserScreen" component={reportUserScreen} />
       </Stack.Navigator>
     </NavigationContainer>
