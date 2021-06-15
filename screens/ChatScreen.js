@@ -1,22 +1,79 @@
-import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { Text, View, StyleSheet, InputToolbar } from "react-native";
+import { GiftedChat } from 'react-native-gifted-chat';
 
 export default function ChatScreen({ route }) {
+  const nickname = 'jackalyn';
+  const [messages, setMessages] = useState([]);
+
+  useEffect( () => {
+    setMessages([
+      {
+        _id: 4,
+        text: 'Hello developer!',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+        },
+      },
+      {
+        _id: 3,
+        text: 'Hello !',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+        },
+      },
+      {
+        _id: 1,
+        createdAt: new Date(),
+        system: true,
+      },
+    ])
+  }, [])
+
+  const onSend = useCallback((messages = []) => {
+    setMessages(previousMessages =>
+      GiftedChat.append(previousMessages, messages))
+  }, [])
+
+  const customSystemMessage = props => {
+    return (
+      <View style={styles.systemMessageContainer}>
+        <Text style={styles.systemMessageText}>
+          You've been matched with ___ ;) You may start chatting!
+          ___ is feeling __
+        </Text>
+      </View>
+    )
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.wip}>Work in Progress</Text>
-    </View>
+    <GiftedChat
+      messages={messages}
+      onSend={ messages => onSend(messages) }
+      user={{
+        _id: 1,
+        // name: 'Jack',
+      }}
+      showAvatarForEveryMessage={ true }
+      renderSystemMessage={customSystemMessage}
+    />
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  systemMessageContainer: {
+    // width: 50,
+    // height: 50,
+    flex: 0.9,
     backgroundColor: "#fff6c8",
     justifyContent: "center",
     alignItems: "center",
   },
-  wip: {
+  systemMessageText: {
     fontSize: 24,
   }
 });
