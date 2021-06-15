@@ -23,7 +23,7 @@ export default function App() {
         <Stack.Screen name="Loading" component={LoadingScreen} />
         <Stack.Screen name="Edit Nickname" component={EditNickname} />
         <Stack.Screen name="promptScreen" component={promptScreen} />
-        <Stack.Screen name="Matchmaking loading" component={MatchingScreen} />
+        <Stack.Screen name="MatchmakingScreen" component={MatchingScreen} />
         <Stack.Screen name="reportUserScreen" component={reportUserScreen} />
       </Stack.Navigator>
     </NavigationContainer>

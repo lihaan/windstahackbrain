@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, StyleSheet, Button, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Button, TextInput, TouchableOpacity} from 'react-native';
 
-export default function EditNickname({navigation}) {
-  const [nickname, setNickname] = useState("")
+export default function EditNickname({navigation, route}) {
+  const [nickname, setNickname] = useState(route.params.nickname)
 
   return (
     <View style={styles.container}>
       <Text style={styles.words}> Set your Nickname! WIP </Text>
+      <Text style={styles.words}> Current: {nickname} </Text>
+
       <TextInput
         style={styles.textInput}
         value={nickname}

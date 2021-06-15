@@ -1,29 +1,35 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { Text, View, StyleSheet, InputToolbar } from "react-native";
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat } from "react-native-gifted-chat";
+import promptScreen from "./promptScreen";
 
 export default function ChatScreen({ route }) {
-  const nickname = 'jackalyn';
+  const nickname = "jackalyn";
   const [messages, setMessages] = useState([]);
 
-  useEffect( () => {
+  useEffect(() => {
     setMessages([
       {
         _id: 4,
-        text: 'Hello developer!',
+        text: "Hello developer!",
         createdAt: new Date(),
         user: {
           _id: 2,
-          name: 'React Native',
+          name: "React Native",
         },
       },
       {
         _id: 3,
-        text: 'Hello !',
+        text: "Hello !",
         createdAt: new Date(),
         user: {
           _id: 2,
-          name: 'React Native',
+          name: "React Native",
         },
       },
       {
@@ -31,15 +37,16 @@ export default function ChatScreen({ route }) {
         createdAt: new Date(),
         system: true,
       },
-    ])
-  }, [])
+    ]);
+  }, []);
 
   const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, messages))
-  }, [])
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, messages)
+    );
+  }, []);
 
-  const customSystemMessage = props => {
+  const customSystemMessage = (props) => {
     return (
       <View style={styles.systemMessageContainer}>
         <Text style={styles.systemMessageText}>
@@ -47,8 +54,8 @@ export default function ChatScreen({ route }) {
           ___ is feeling __
         </Text>
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <GiftedChat
@@ -61,7 +68,7 @@ export default function ChatScreen({ route }) {
       showAvatarForEveryMessage={ true }
       renderSystemMessage={ customSystemMessage }
     />
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -75,5 +82,5 @@ const styles = StyleSheet.create({
   },
   systemMessageText: {
     fontSize: 24,
-  }
+  },
 });

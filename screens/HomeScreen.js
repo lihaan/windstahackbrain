@@ -2,8 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
 
 // just a random homescreen in place
-export default function HomeScreen({ navigation }) {
-  const [nickname, setNickname] = useState("No Nickname Set");
+export default function HomeScreen({ navigation, route }) {
+  const [nickname, setNickname] = useState("User");
+
+  function checkName( nickname ) {
+    if (nickname != "User")
+      {return route.params.nickname}
+    else {
+      return nickname
+    }
+  }
 
   const PLACEHOLDER_NAME = "Li Han";
 
@@ -32,7 +40,7 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.text}>{questionPrompt.question}</Text>
       <Text style={styles.text}>Hello!</Text>
-      <Text style={styles.nickname}>Nickname: {nickname}</Text>
+      {route.params?.nickname ? route.params.nickname : nickname}
       <Button
         title="Chat now!"
         onPress={() => {
@@ -48,7 +56,7 @@ export default function HomeScreen({ navigation }) {
       <Button
         title="Edit Nickname"
         onPress={() => {
-          navigation.navigate("Edit Nickname");
+          navigation.navigate("Edit Nickname", {nickname});
         }}
       ></Button>
       <Button
