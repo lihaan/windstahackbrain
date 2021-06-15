@@ -1,8 +1,20 @@
 import React, {useState, useEffect} from "react";
 import { Text, View, StyleSheet, Button, TextInput, TouchableOpacity} from 'react-native';
+import { useFonts, JosefinSans_500Medium } from '@expo-google-fonts/josefin-sans';
+
 
 export default function EditNickname({navigation, route}) {
-  const [nickname, setNickname] = useState(route.params.nickname)
+  const [nickname, setNickname] = useState(route.params.nickname? route.params.nickname: "")
+
+  let [fontsLoaded] = useFonts({
+    JosefinSans_500Medium,
+  });
+
+  if (!fontsLoaded) {
+    return (<View style={styles.container}>
+    <Text style={styles.text}>Loading</Text>
+  </View>);
+  }
 
   return (
     <View style={styles.container}>
@@ -13,19 +25,21 @@ export default function EditNickname({navigation, route}) {
         value={nickname}
         onChangeText={(newNickname) => setNickname(newNickname)}
       ></TextInput>
-      <TouchableOpacity
-         onPress={() => navigation.navigate("Home", {nickname})}
-         style={[styles.button, styles.submitButton]}
-       >
-         <Text style={styles.buttonText}>Submit</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         onPress={() => navigation.goBack()}
-         style={[styles.button, styles.cancelButton]}
-       >
-         <Text style={styles.buttonText}>Cancel</Text>
-       </TouchableOpacity>
-     </View>
+      <View style={styles.buttons}>
+         <TouchableOpacity
+           onPress={() => navigation.goBack()}
+           style={[styles.button, styles.cancelButton]}
+         >
+           <Text style={[styles.cancelText, styles.buttonText]}>Cancel</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           onPress={() => navigation.navigate("Home", {nickname})}
+           style={[styles.button, styles.saveButton]}
+         >
+           <Text style={[styles.saveText, styles.buttonText]}>Submit</Text>
+         </TouchableOpacity>
+      </View>
+    </View>
 
   );
 }
@@ -35,48 +49,57 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff6C8'
+    backgroundColor: '#fff6C8',
+    paddingHorizontal: 16,
   },
   words: {
-      fontSize: 30,
-      fontWeight: "bold",
-      top: -200
+    fontSize: 30,
+    fontFamily: 'JosefinSans_500Medium',
   },
-  current: {
-    fontSize: 15,
-    top: -200
-},
  textInput: {
    margin: 20,
-   borderWidth: 1,
    width: "80%",
-   padding: 10,
-   borderColor: "#ccc",
    backgroundColor: "white",
-   top: -180,
+   textAlign: "center",
+   paddingHorizontal: 20,
+   paddingVertical: 10,
+   backgroundColor: 'rgba(210, 151, 37, 0.17)',
+   fontSize: 18
  },
-
   buttons: {
+    marginTop: 30,
     flexDirection: "row",
+    width: '80%',
+    justifyContent: "space-between",
   },
   button: {
-    padding: 10,
-    margin: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    shadowColor: '#111111',
+    shadowOffset: {
+      width: 2,
+    	height: 6,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 1,
   },
   buttonText: {
     fontWeight: "bold",
-    color: "white",
+    letterSpacing: 0.5,
   },
-  submitButton: {
+  saveButton: {
     backgroundColor: "orange",
-    top: "4.5%",
-    left: 60,
-    borderRadius: 10,
+    borderRadius: 50,
   },
   cancelButton: {
-    backgroundColor: "red",
-    top: "0%",
-    left: -60,
+    backgroundColor: "#fbfbfb",
     borderRadius: 10,
   },
+  cancelText: {
+    color: '#444444',
+  },
+  saveText: {
+    color: "#ffffff",
+  }
  });

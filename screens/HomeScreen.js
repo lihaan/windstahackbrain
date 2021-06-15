@@ -6,11 +6,27 @@ import { useFocusEffect } from '@react-navigation/native'
 
 // just a random homescreen in place
 export default function HomeScreen({ navigation, route }) {
+  const DEFAULT_NICKNAME = "User";
+  const [nickname, setNickname] = useState(DEFAULT_NICKNAME);
+  useEffect(() => {
+    if (nickname==DEFAULT_NICKNAME) {
+      navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
+    }
+  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params?.nickname) {
+        setNickname(route.params.nickname)
+      }
+      return;
+    })
+  );
+
   let [fontsLoaded] = useFonts({
     JosefinSans_300Light,
   });
 
-  const [nickname, setNickname] = useState("User");
   const [answer, setAnswer] = useState("")
 
   function checkName() {
@@ -35,7 +51,7 @@ export default function HomeScreen({ navigation, route }) {
     },
   ]
 
-  const [curQuestionIndex, setCurQuestionIndex] = useState(Math.floor(Math.random() * QUESTIONS.length))
+  const [curQuestionIndex, setCurQuestionIndex] = useState(0)
 
   function handlePress(input) {
     setAnswer(input)
@@ -55,7 +71,10 @@ export default function HomeScreen({ navigation, route }) {
       <Button
         title="Chat now!"
         onPress={() => {
-          navigation.navigate("Chat");
+          navigation.navigate("Chat", {
+            question: QUESTIONS[curQuestionIndex],
+            answer: answer,
+          });
         }}
       ></Button>
       <Button
@@ -67,7 +86,7 @@ export default function HomeScreen({ navigation, route }) {
       <Button
         title="Edit Nickname"
         onPress={() => {
-          navigation.navigate("Edit Nickname", {nickname});
+          navigation.navigate("Edit Nickname", { nickname });
         }}
       ></Button>
       <Button
@@ -94,16 +113,17 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   question: {
-    fontSize: 20,
+    fontSize: 22,
     textAlign: 'center',
-    fontFamily: 'JosefinSans_300Light'
+    fontFamily: 'JosefinSans_300Light',
+    lineHeight: 30
   },
   input: {
-    marginTop: 10,
+    marginTop: 20,
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: 'rgba(210, 151, 37, 0.17)',
     width: '100%',
-    fontSize: 16,
+    fontSize: 18,
   }
 });
