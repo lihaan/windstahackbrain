@@ -2,12 +2,19 @@ import React, {useState, useEffect} from "react";
 import { Text, View, Button, TextInput, StyleSheet } from "react-native";
 import { useFonts, JosefinSans_300Light } from '@expo-google-fonts/josefin-sans';
 import { Rating } from '../components/Rating';
+import { useFocusEffect } from '@react-navigation/native'
 
 // just a random homescreen in place
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
   let [fontsLoaded] = useFonts({
     JosefinSans_300Light,
   });
+
+  const [nickname, setNickname] = useState("User");
+
+  function checkName() {
+    return route.params?.nickname ? route.params.nickname : nickname
+  }
   
   const PLACEHOLDER_NAME = "Li Han";
 
@@ -29,7 +36,6 @@ export default function HomeScreen({ navigation }) {
     },
   ]
 
-  const [nickname, setNickname] = useState("No Nickname Set")
   const [input, SetInput] = useState()
   const [curQuestionIndex, setCurQuestionIndex] = useState(Math.floor(Math.random() * QUESTIONS.length))
 
@@ -44,7 +50,8 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.question}>{QUESTIONS[curQuestionIndex].question}</Text>
       {QUESTIONS[curQuestionIndex].input}
-      <Text style={styles.nickname}>Nickname: {nickname}</Text>
+      <Text style={styles.text}>Hello {checkName()}!</Text>
+      
       <Button
         title="Chat now!"
         onPress={() => {
@@ -60,7 +67,7 @@ export default function HomeScreen({ navigation }) {
       <Button
         title="Edit Nickname"
         onPress={() => {
-          navigation.navigate("Edit Nickname");
+          navigation.navigate("Edit Nickname", {nickname});
         }}
       ></Button>
       <Button

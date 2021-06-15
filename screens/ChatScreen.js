@@ -1,29 +1,35 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { Text, View, StyleSheet, InputToolbar } from "react-native";
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat } from "react-native-gifted-chat";
+import promptScreen from "./promptScreen";
 
 export default function ChatScreen({ route }) {
-  const nickname = 'jackalyn';
+  const nickname = "jackalyn";
   const [messages, setMessages] = useState([]);
 
-  useEffect( () => {
+  useEffect(() => {
     setMessages([
       {
         _id: 4,
-        text: 'Hello developer!',
+        text: "Hello developer!",
         createdAt: new Date(),
         user: {
           _id: 2,
-          name: 'React Native',
+          name: "React Native",
         },
       },
       {
         _id: 3,
-        text: 'Hello !',
+        text: "Hello !",
         createdAt: new Date(),
         user: {
           _id: 2,
-          name: 'React Native',
+          name: "React Native",
         },
       },
       {
@@ -31,49 +37,50 @@ export default function ChatScreen({ route }) {
         createdAt: new Date(),
         system: true,
       },
-    ])
-  }, [])
+    ]);
+  }, []);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, messages))
-  }, [])
+  const onSend = useCallback((messages = [(value = { promptScreen })]) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, messages)
+    );
+  }, []);
 
-  const customSystemMessage = props => {
+  const customSystemMessage = (props) => {
     return (
       <View style={styles.systemMessageContainer}>
         <Text style={styles.systemMessageText}>
-          You've been matched with ___ ; You may start chatting!
+          You've been matched with ___; You may start chatting!{"\n"}
           ___ is feeling __
         </Text>
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <GiftedChat
-      messages={messages}
+      messages={ messages }
       onSend={ messages => onSend(messages) }
       user={{
         _id: 1,
         // name: 'Jack',
       }}
-      showAvatarForEveryMessage={ true } 
-      renderSystemMessage={customSystemMessage}
+      showAvatarForEveryMessage={ true }
+      renderSystemMessage={ customSystemMessage }
     />
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   systemMessageContainer: {
     // width: 50,
     // height: 50,
-    flex: 0.9,
+    flex: 1,
     backgroundColor: "#fff6c8",
     justifyContent: "center",
     alignItems: "center",
   },
   systemMessageText: {
     fontSize: 24,
-  }
+  },
 });

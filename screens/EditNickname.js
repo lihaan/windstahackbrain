@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, StyleSheet, Button, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Button, TextInput, TouchableOpacity} from 'react-native';
 
-export default function EditNickname({navigation}) {
-  const [nickname, setNickname] = useState("")
+export default function EditNickname({navigation, route}) {
+  const [nickname, setNickname] = useState(route.params.nickname)
 
   return (
     <View style={styles.container}>
-      <Text style={styles.words}> Set your Nickname! WIP </Text>
+      <Text style={styles.words}> Set your Nickname! </Text>
+
       <TextInput
         style={styles.textInput}
         value={nickname}
@@ -68,12 +69,14 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: "orange",
-    top: -150,
-    left: -60
+    top: "4.5%",
+    left: 60,
+    borderRadius: 10,
   },
   cancelButton: {
     backgroundColor: "red",
-    top: -194.5,
-    left: 60
+    top: "0%",
+    left: -60,
+    borderRadius: 10,
   },
  });
