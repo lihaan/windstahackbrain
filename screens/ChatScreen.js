@@ -60,7 +60,7 @@ export default function ChatScreen({ route }) {
     return (
       <View style={styles.systemMessageContainer}>
         <Text style={styles.systemMessageText}>
-          You've been matched with ___ ;) You may start chatting!{"\n"}
+          You've been matched with ___; You may start chatting!{"\n"}
           ___ is feeling __
         </Text>
       </View>

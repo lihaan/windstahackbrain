@@ -1,46 +1,57 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, Button, StyleSheet } from "react-native";
+import React, {useState, useEffect} from "react";
+import { Text, View, Button, TextInput, StyleSheet } from "react-native";
+import { useFonts, JosefinSans_300Light } from '@expo-google-fonts/josefin-sans';
+import { Rating } from '../components/Rating';
+import { useFocusEffect } from '@react-navigation/native'
 
 // just a random homescreen in place
 export default function HomeScreen({ navigation, route }) {
+  let [fontsLoaded] = useFonts({
+    JosefinSans_300Light,
+  });
+
   const [nickname, setNickname] = useState("User");
 
-  function checkName( nickname ) {
-    if (nickname != "User")
-      {return route.params.nickname}
-    else {
-      return nickname
-    }
+  function checkName() {
+    return route.params?.nickname ? route.params.nickname : nickname
   }
-
+  
   const PLACEHOLDER_NAME = "Li Han";
 
-  const QUESTIONS_AND_PROMPTS = [
+  const QUESTIONS = [
     {
       question: `Hey ${PLACEHOLDER_NAME}, how are you feeling today?`,
-      prompt: `${PLACEHOLDER_NAME} is feeling`,
+      format: `${PLACEHOLDER_NAME} is feeling`,
+      input: <Rating></Rating>
     },
     {
       question: `What's up ${PLACEHOLDER_NAME}! What song is currently stuck in your head?`,
-      prompt: `${PLACEHOLDER_NAME} can't stop listening to`,
+      format: `${PLACEHOLDER_NAME} can't stop listening to`,
+      input: <Rating></Rating>
     },
     {
       question: `Hello ${PLACEHOLDER_NAME}, any cravings now?`,
-      prompt: `${PLACEHOLDER_NAME} really needs some`,
+      format: `${PLACEHOLDER_NAME} really needs some`,
+      input: <Rating></Rating>
     },
-  ];
+  ]
 
-  const [questionPrompt, setQuestionPrompt] = useState(
-    QUESTIONS_AND_PROMPTS[
-      Math.floor(Math.random() * QUESTIONS_AND_PROMPTS.length)
-    ]
-  );
+  const [input, SetInput] = useState()
+  const [curQuestionIndex, setCurQuestionIndex] = useState(Math.floor(Math.random() * QUESTIONS.length))
+
+  
+  if (!fontsLoaded) {
+    return (<View style={styles.container}>
+    <Text style={styles.question}>Loading</Text>
+  </View>);
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{questionPrompt.question}</Text>
-      <Text style={styles.text}>Hello!</Text>
-      {route.params?.nickname ? route.params.nickname : nickname}
+      <Text style={styles.question}>{QUESTIONS[curQuestionIndex].question}</Text>
+      {QUESTIONS[curQuestionIndex].input}
+      <Text style={styles.text}>Hello {checkName()}!</Text>
+      
       <Button
         title="Chat now!"
         onPress={() => {
@@ -60,9 +71,9 @@ export default function HomeScreen({ navigation, route }) {
         }}
       ></Button>
       <Button
-        title="loading"
+        title="view matching screen"
         onPress={() => {
-          navigation.navigate("Matchmaking loading");
+          navigation.navigate("Matchmaking");
         }}
       ></Button>
     </View>
@@ -72,15 +83,19 @@ export default function HomeScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff6c8",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff6c8',
+    alignItems: 'center', 
+    justifyContent: 'center',
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   nickname: {
     margin: 10,
     fontSize: 25,
   },
-  text: {
-    fontSize: 60,
-  },
+  question: {
+    fontSize: 20,
+    textAlign: 'center',
+    fontFamily: 'JosefinSans_300Light'
+  }
 });
