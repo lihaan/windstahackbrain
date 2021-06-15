@@ -11,34 +11,27 @@ export default function HomeScreen({ navigation }) {
   
   const PLACEHOLDER_NAME = "Li Han";
 
-  const QUESTIONS_AND_PROMPTS = [
+  const QUESTIONS = [
     {
       question: `Hey ${PLACEHOLDER_NAME}, how are you feeling today?`,
-      prompt: `${PLACEHOLDER_NAME} is feeling`,
+      format: `${PLACEHOLDER_NAME} is feeling`,
       input: <Rating></Rating>
     },
     {
       question: `What's up ${PLACEHOLDER_NAME}! What song is currently stuck in your head?`,
-      prompt: `${PLACEHOLDER_NAME} can't stop listening to`,
+      format: `${PLACEHOLDER_NAME} can't stop listening to`,
       input: <Rating></Rating>
     },
     {
       question: `Hello ${PLACEHOLDER_NAME}, any cravings now?`,
-      prompt: `${PLACEHOLDER_NAME} really needs some`,
+      format: `${PLACEHOLDER_NAME} really needs some`,
       input: <Rating></Rating>
     },
   ]
 
   const [nickname, setNickname] = useState("No Nickname Set")
-
-  const [curQuestion, setCurQuestion] = useState(Math.floor(Math.random() * QUESTIONS_AND_PROMPTS.length))
-  const [questionPrompt, setQuestionPrompt] = useState(QUESTIONS_AND_PROMPTS[curQuestion]);
-
-  const [questionPrompt, setQuestionPrompt] = useState(
-    QUESTIONS_AND_PROMPTS[
-      Math.floor(Math.random() * QUESTIONS_AND_PROMPTS.length)
-    ]
-  );
+  const [input, SetInput] = useState()
+  const [curQuestionIndex, setCurQuestionIndex] = useState(Math.floor(Math.random() * QUESTIONS.length))
 
   
   if (!fontsLoaded) {
@@ -49,8 +42,8 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.question}>{questionPrompt.question}</Text>
-      {questionPrompt.input}
+      <Text style={styles.question}>{QUESTIONS[curQuestionIndex].question}</Text>
+      {QUESTIONS[curQuestionIndex].input}
       <Text style={styles.nickname}>Nickname: {nickname}</Text>
       <Button
         title="Chat now!"

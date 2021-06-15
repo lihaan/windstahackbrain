@@ -3,23 +3,32 @@ import { Text, View, Button, TextInput, StyleSheet, TouchableOpacity } from "rea
 
 export function Rating() {
 
-  function renderSymbol() {
-    return <TouchableOpacity style={styles.symbol}></TouchableOpacity>
+  const [answer, setAnswer] = useState(0)
+
+  function renderSymbol(index) {
+    return <TouchableOpacity style={styles.symbol} onPress={()=>setAnswer()}></TouchableOpacity>
   }
 
-  return (<View>
-    {renderSymbol()}
-    {renderSymbol()}
-    {renderSymbol()}
-    {renderSymbol()}
-    {renderSymbol()}
-  </View>);
+  return (<View style={styles.inputContainer}>
+    {renderSymbol(1)}
+    {renderSymbol(2)}
+    {renderSymbol(3)}
+    {renderSymbol(4)}
+    {renderSymbol(5)}
+    </View>);
 } 
 
 const styles = StyleSheet.create({
   symbol: {
-    height: 10,
-    width: 10,
-    backgroundColor: 'red'
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    backgroundColor: '#f9f9f9'
+  },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: 'space-evenly',
+    width:"100%",
+
   }
 });

@@ -43,7 +43,7 @@ export default function ChatScreen({ route }) {
     return (
       <View style={styles.systemMessageContainer}>
         <Text style={styles.systemMessageText}>
-          You've been matched with ___ ;) You may start chatting!
+          You've been matched with ___ ; You may start chatting!
           ___ is feeling __
         </Text>
       </View>
@@ -58,7 +58,7 @@ export default function ChatScreen({ route }) {
         _id: 1,
         // name: 'Jack',
       }}
-      showAvatarForEveryMessage={ true }
+      showAvatarForEveryMessage={ true } 
       renderSystemMessage={customSystemMessage}
     />
   )
