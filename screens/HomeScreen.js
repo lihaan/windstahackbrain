@@ -9,7 +9,30 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.text}>Helloo</Text>
       {/* <TextInput style={styles.nameInput} placeHolder="Jackalyn" value={this.state.name} /> */}
-      <Button title="Chat now!" onPress={() => { navigation.navigate("Chat"); }}></Button>
+      <Button
+        title="Chat now!"
+        onPress={() => {
+          navigation.navigate("Chat");
+        }}
+      ></Button>
+      <Button
+        title="prompt!"
+        onPress={() => {
+          navigation.navigate("promptScreen");
+        }}
+      ></Button>
+      <Button
+        title="loading"
+        onPress={() => {
+          navigation.navigate("Matchmaking loading");
+        }}
+      ></Button>
+      <Button
+        title="Report"
+        onPress={() => {
+          navigation.navigate("reportUserScreen");
+        }}
+      ></Button>
     </View>
   );
 }
@@ -17,9 +40,9 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff6c8',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff6c8",
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
     margin: 10,

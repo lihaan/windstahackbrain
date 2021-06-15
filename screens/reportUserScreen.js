@@ -23,9 +23,11 @@ export default function reportUserScreen() {
       <TextInput
         style={styles.textInput}
         onChangeText={(text) => setReportText(text)}
-        //onSubmitEditing={Keyboard.dismiss}
       />
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Home")}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>Report</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
