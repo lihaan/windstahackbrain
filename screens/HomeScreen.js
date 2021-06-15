@@ -34,6 +34,11 @@ export default function HomeScreen({ navigation }) {
   const [curQuestion, setCurQuestion] = useState(Math.floor(Math.random() * QUESTIONS_AND_PROMPTS.length))
   const [questionPrompt, setQuestionPrompt] = useState(QUESTIONS_AND_PROMPTS[curQuestion]);
 
+  const [questionPrompt, setQuestionPrompt] = useState(
+    QUESTIONS_AND_PROMPTS[
+      Math.floor(Math.random() * QUESTIONS_AND_PROMPTS.length)
+    ]
+  );
 
   
   if (!fontsLoaded) {
@@ -47,14 +52,33 @@ export default function HomeScreen({ navigation }) {
       <Text style={styles.question}>{questionPrompt.question}</Text>
       {questionPrompt.input}
       <Text style={styles.nickname}>Nickname: {nickname}</Text>
-      {/* <TextInput style={styles.nameInput} placeHolder="Jackalyn" value={this.state.name} /> */}
-      <Button title="Chat now!" onPress={() => { navigation.navigate("Chat"); }}></Button>
-      <Button title="View Loading Screen(??)" onPress={() => { navigation.navigate("Loading"); }}></Button>
-      <Button title="Edit Nickname" onPress={() => { navigation.navigate("Edit Nickname"); }}></Button>
-
+      <Button
+        title="Chat now!"
+        onPress={() => {
+          navigation.navigate("Chat");
+        }}
+      ></Button>
+      <Button
+        title="View Loading Screen(??)"
+        onPress={() => {
+          navigation.navigate("Loading");
+        }}
+      ></Button>
+      <Button
+        title="Edit Nickname"
+        onPress={() => {
+          navigation.navigate("Edit Nickname");
+        }}
+      ></Button>
+      <Button
+        title="loading"
+        onPress={() => {
+          navigation.navigate("Matchmaking loading");
+        }}
+      ></Button>
     </View>
   );
-} 
+}
 
 const styles = StyleSheet.create({
   container: {
