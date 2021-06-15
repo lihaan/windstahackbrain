@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
+import { useFocusEffect } from '@react-navigation/native'
 
 // just a random homescreen in place
 export default function HomeScreen({ navigation, route }) {
   const [nickname, setNickname] = useState("User");
 
-  function checkName( nickname ) {
-    if (nickname != "User")
-      {return route.params.nickname}
-    else {
-      return nickname
-    }
+  function checkName() {
+    return route.params?.nickname ? route.params.nickname : nickname
   }
+
 
   const PLACEHOLDER_NAME = "Li Han";
 
@@ -39,8 +37,8 @@ export default function HomeScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{questionPrompt.question}</Text>
-      <Text style={styles.text}>Hello!</Text>
-      {route.params?.nickname ? route.params.nickname : nickname}
+      <Text style={styles.text}>Hello {checkName()}!</Text>
+      
       <Button
         title="Chat now!"
         onPress={() => {

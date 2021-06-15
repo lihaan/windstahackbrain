@@ -6,8 +6,7 @@ export default function EditNickname({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.words}> Set your Nickname! WIP </Text>
-      <Text style={styles.words}> Current: {nickname} </Text>
+      <Text style={styles.words}> Set your Nickname! </Text>
 
       <TextInput
         style={styles.textInput}
@@ -70,12 +69,14 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: "orange",
-    top: -150,
-    left: -60
+    top: "4.5%",
+    left: 60,
+    borderRadius: 10,
   },
   cancelButton: {
     backgroundColor: "red",
-    top: -194.5,
-    left: 60
+    top: "0%",
+    left: -60,
+    borderRadius: 10,
   },
  });
