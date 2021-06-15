@@ -43,7 +43,7 @@ export default function ChatScreen({ route }) {
     return (
       <View style={styles.systemMessageContainer}>
         <Text style={styles.systemMessageText}>
-          You've been matched with ___ ;) You may start chatting!
+          You've been matched with ___ ;) You may start chatting!{"\n"}
           ___ is feeling __
         </Text>
       </View>
@@ -52,14 +52,14 @@ export default function ChatScreen({ route }) {
 
   return (
     <GiftedChat
-      messages={messages}
+      messages={ messages }
       onSend={ messages => onSend(messages) }
       user={{
         _id: 1,
         // name: 'Jack',
       }}
       showAvatarForEveryMessage={ true }
-      renderSystemMessage={customSystemMessage}
+      renderSystemMessage={ customSystemMessage }
     />
   )
 }
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   systemMessageContainer: {
     // width: 50,
     // height: 50,
-    flex: 0.9,
+    flex: 1,
     backgroundColor: "#fff6c8",
     justifyContent: "center",
     alignItems: "center",
