@@ -79,17 +79,17 @@ export default function promptScreen({ navigation }) {
           contentContainerStyle={containerStyle}
         >
           <Text style={styles.promptTitle}>Choose a Prompt!</Text>
-          <Text style={styles.prompt1}>
+          <TouchableOpacity onPress={() => navigation.navigate("Chat")} style={styles.promptButton}>
+            <Text style={styles.prompt1}>
             {prompt}
-            <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
-              <Feather
-                style={styles.addButton}
-                name="plus-circle"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </Text>
+            </Text>
+            <Feather
+              style={styles.addButton}
+              name="plus-circle"
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
 
           <Text style={styles.prompt2}>
             {prompt}
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   prompt1: {
-    marginTop: 40,
     fontSize: 15,
   },
   prompt2: {
@@ -131,6 +130,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   addButton: {
-    paddingLeft: 300,
   },
+  promptButton: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }
 });
