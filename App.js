@@ -11,7 +11,6 @@ import loadingScreen from "./screens/loadingScreen";
 import reportUserScreen from "./screens/reportUserScreen";
 import promptScreen from "./screens/promptScreen";
 
-
 const Stack = createStackNavigator();
 
 export default function App() {
