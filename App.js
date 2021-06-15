@@ -1,7 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import HelpScreen from "./screens/HelpScreen";
 import { NavigationContainer } from "@react-navigation/native";
+
+import HelpScreen from "./screens/HelpScreen";
 import ChatScreen from "./screens/ChatScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LoadingScreen from "./screens/LoadingScreen";
