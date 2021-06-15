@@ -7,7 +7,7 @@ import ChatScreen from "./screens/ChatScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import EditNickname from "./screens/EditNickname";
-import loadingScreen from "./screens/MatchingScreen";
+import MatchingScreen from "./screens/MatchingScreen";
 import reportUserScreen from "./screens/reportUserScreen";
 import promptScreen from "./screens/promptScreen";
 
@@ -23,7 +23,7 @@ export default function App() {
         <Stack.Screen name="Loading" component={LoadingScreen} />
         <Stack.Screen name="Edit Nickname" component={EditNickname} />
         <Stack.Screen name="promptScreen" component={promptScreen} />
-        <Stack.Screen name="Matchmaking loading" component={loadingScreen} />
+        <Stack.Screen name="Matchmaking loading" component={MatchingScreen} />
         <Stack.Screen name="reportUserScreen" component={reportUserScreen} />
       </Stack.Navigator>
     </NavigationContainer>
