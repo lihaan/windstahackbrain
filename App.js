@@ -1,34 +1,37 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import ChatScreen from "./screens/ChatScreen";
+import HomeScreen from "./screens/HomeScreen";
+import LoadingScreen from "./screens/LoadingScreen";
+//import EditNickname from "./screens/EditNickname";
 import {
-  StyleSheet,
+  Modal,
+  Portal,
   Text,
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-  TextInput,
-  Keyboard,
   Button,
-} from "react-native";
-//import { NavigationContainer } from "@react-navigation/native";
-//import { createStackNavigator } from "@react-navigation/stack";
+  Provider,
+  StyleSheet,
+} from "react-native-paper";
 import loadingScreen from "./screens/loadingScreen";
 import reportUserScreen from "./screens/reportUserScreen";
+import promptScreen from "./screens/promptScreen";
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello World!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator headerMode="none" mode="modal">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
+        <Stack.Screen name="Loading" component={LoadingScreen} />
+        {/* <Stack.Screen name="Edit Nickname" component={EditNickname} /> */}
+        <Stack.Screen name="promptScreen" component={promptScreen} />
+        <Stack.Screen name="Matchmaking loading" component={loadingScreen} />
+        <Stack.Screen name="reportUserScreen" component={reportUserScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
