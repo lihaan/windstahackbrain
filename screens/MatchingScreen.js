@@ -45,7 +45,6 @@ export default function MatchingScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.chatContainer}>Insert navigation bar at the top</Text>
       <Text style={styles.title}>You are almost there! Matching you up...</Text>
       <Text style={styles.time}>
         {loading ? <ActivityIndicator size="large" /> : "Done!"}

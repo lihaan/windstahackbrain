@@ -17,8 +17,11 @@ import { db } from "../firebase";
 import { Modal, Portal, Button, Provider } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { useFonts, JosefinSans_500Medium } from '@expo-google-fonts/josefin-sans';
-import { Lato_400Regular } from '@expo-google-fonts/lato';
+import {
+  useFonts,
+  JosefinSans_500Medium,
+} from "@expo-google-fonts/josefin-sans";
+import { Lato_400Regular } from "@expo-google-fonts/lato";
 
 export default function ChatScreen({ route }) {
   // function hash() {
@@ -41,9 +44,11 @@ export default function ChatScreen({ route }) {
     JosefinSans_500Medium,
     Lato_400Regular,
   });
-  const systemtext = "You've been matched with ___; You may start chatting!{'\n'}___ is feeling __";
+  const systemtext =
+    "You've been matched with ___; You may start chatting!{'\n'}___ is feeling __";
   // change the variable names to switch your POV, user1 <-> user2
-  const user1 = { _id: 1, name: 'Jackalyn' }, user2 = { _id: 2, name: 'React Native' };
+  const user1 = { _id: 1, name: "Jackalyn" },
+    user2 = { _id: 2, name: "React Native" };
   // const chatid = hash(user1._id.toString, user2._id.toString);
 
   useEffect(() => {
@@ -56,7 +61,7 @@ export default function ChatScreen({ route }) {
       },
       {
         _id: 1,
-        text: {systemtext},
+        text: { systemtext },
         createdAt: new Date(),
         system: true,
       },
@@ -81,15 +86,15 @@ export default function ChatScreen({ route }) {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
-    
-    const { _id, createdAt, text, user, } = messages[0]
-    db.collection('chats').add({ _id, createdAt, text, user, friend: user2 })
+
+    const { _id, createdAt, text, user } = messages[0];
+    db.collection("chats").add({ _id, createdAt, text, user, friend: user2 });
   }, []);
 
   const customSystemMessage = (props) => {
     return (
       <View style={styles.systemMessageContainer}>
-        <Text style={styles.systemMessageText}>{ systemtext }</Text>
+        <Text style={styles.systemMessageText}>{systemtext}</Text>
       </View>
     );
   };
@@ -100,8 +105,10 @@ export default function ChatScreen({ route }) {
       prompt: `What fictional world or place would you like to visit?`,
     },
     {
-      prompt: `What’s the best piece of advice you’ve ever been given?",
-      "If you could write a book, what genre would you write it in? Mystery? Thriller? Romance? Historical fiction? Non-fiction?`,
+      prompt: `What’s the best piece of advice you’ve ever been given?`,
+    },
+    {
+      prompt: `If you could write a book, what genre would you write it in? Mystery? Thriller? Romance? Historical fiction? Non-fiction?`,
     },
     {
       prompt: `What is your most used emoji?`,
@@ -164,7 +171,13 @@ export default function ChatScreen({ route }) {
   //show modal
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-  const containerStyle = { backgroundColor: "white", paddingHorizontal: 10, paddingVertical: 20, marginHorizontal: 16, borderRadius: 6 };
+  const containerStyle = {
+    backgroundColor: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    marginHorizontal: 16,
+    borderRadius: 6,
+  };
 
   function hideModalAndAutofill(promptValue) {
     hideModal();
@@ -173,7 +186,10 @@ export default function ChatScreen({ route }) {
 
   function renderAdd(promptState) {
     return (
-      <TouchableOpacity onPress={()=>hideModalAndAutofill(promptState.prompt)} style={styles.promptButton}>
+      <TouchableOpacity
+        onPress={() => hideModalAndAutofill(promptState.prompt)}
+        style={styles.promptButton}
+      >
         <Text style={styles.promptText}>{promptState.prompt}</Text>
         <View style={styles.addButton}>
           <Feather name="plus-circle" size={20} color="#666666" />
@@ -183,22 +199,32 @@ export default function ChatScreen({ route }) {
   }
 
   if (!fontsLoaded) {
-    return (<View style={styles.container}>
-    <Text>Loading</Text>
-  </View>);
+    return (
+      <View style={styles.container}>
+        <Text>Loading</Text>
+      </View>
+    );
   }
 
   return (
     <Provider>
       <Portal>
-        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+        <Modal
+          visible={visible}
+          onDismiss={hideModal}
+          contentContainerStyle={containerStyle}
+        >
           <Text style={styles.promptTitle}>Choose a Prompt!</Text>
           {renderAdd(prompt1)}
           {renderAdd(prompt2)}
         </Modal>
       </Portal>
       <Button style={{ marginTop: 30 }} onPress={showModal}>
-        <MaterialCommunityIcons name="lightbulb-on-outline" size={24} color="black" />
+        <MaterialCommunityIcons
+          name="lightbulb-on-outline"
+          size={24}
+          color="black"
+        />
       </Button>
       <GiftedChat
         // text={ '' }
@@ -208,8 +234,8 @@ export default function ChatScreen({ route }) {
         user={user1}
         showAvatarForEveryMessage={true}
         renderSystemMessage={customSystemMessage}
-        textInputProps={{value:inputTextValue}}
-        onInputTextChanged={(value)=>setInputTextValue(value)}
+        textInputProps={{ value: inputTextValue }}
+        onInputTextChanged={(value) => setInputTextValue(value)}
         alwaysShowSend={Boolean(inputTextValue)}
       />
     </Provider>
@@ -231,18 +257,18 @@ const styles = StyleSheet.create({
   promptTitle: {
     alignSelf: "center",
     fontSize: 20,
-    fontFamily: 'JosefinSans_500Medium',
-    marginBottom: 20
+    fontFamily: "JosefinSans_500Medium",
+    marginBottom: 20,
   },
   promptText: {
     fontSize: 15,
     flex: 6,
-    fontFamily: 'Lato_400Regular',
-    lineHeight: 21
+    fontFamily: "Lato_400Regular",
+    lineHeight: 21,
   },
   addButton: {
     flex: 1,
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   promptButton: {
     paddingVertical: 15,

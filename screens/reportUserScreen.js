@@ -16,9 +16,6 @@ export default function reportUserScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.reportContainer}>
-        Insert navigation bar at the top
-      </Text>
       <Text style={styles.title}>Reason for Report</Text>
       <TextInput
         style={styles.textInput}
