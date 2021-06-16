@@ -13,7 +13,6 @@ import {
   Keyboard,
 } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
-// import promptScreen from "./promptScreen";
 import { Modal, Portal, Button, Provider } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -50,7 +49,7 @@ export default function ChatScreen({ route }) {
     ]);
   }, []);
 
-  const onSend = useCallback((messages = [(prompt) => setPrompt(prompt)]) => {
+  const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
@@ -126,8 +125,11 @@ export default function ChatScreen({ route }) {
     return [firstIndex, secondIndex];
   }
 
-  const [prompt, setPrompt] = useState();
-  const addPrompt = pick();
+  const indexes = pick();
+  const firstI = indexes[0];
+  const secondI = indexes[1];
+  const [prompt1, setPrompt1] = useState(prompts[firstI]);
+  const [prompt2, setPrompt2] = useState(prompts[secondI]);
 
   //show modal
   const showModal = () => setVisible(true);
@@ -144,16 +146,14 @@ export default function ChatScreen({ route }) {
         >
           <Text style={styles.promptTitle}>Choose a Prompt!</Text>
           <Text style={styles.prompt1}>
-            {addPrompt[0]}
-            {/* {prompt.prompts[firstI]} */}
+            {prompt1.prompt}
             <TouchableOpacity onPress={hideModal} style={styles.promptButton}>
               <Feather name="plus-circle" size={24} color="black" />
             </TouchableOpacity>
           </Text>
 
           <Text style={styles.prompt2}>
-            {addPrompt[1]}
-            {/* {prompt.prompts[secondI]} */}
+            {prompt2.prompt}
             <TouchableOpacity onPress={hideModal}>
               <Feather
                 style={styles.addButton}
