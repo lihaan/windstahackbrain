@@ -1,47 +1,120 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  Button,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import React, {useState, useEffect} from "react";
+import { Text, View, Button, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { useFonts, JosefinSans_300Light } from '@expo-google-fonts/josefin-sans';
+import { Rating } from '../components/Rating.js';
+import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { uuidv4 } from "../functions/uuid_generator.js";
 import { AntDesign, Feather } from "@expo/vector-icons";
 
 // just a random homescreen in place
-export default function HomeScreen({ navigation }) {
-  const [nickname, setNickname] = useState("No Nickname Set");
+export default function HomeScreen({ navigation, route }) {
+  const DEFAULT_NICKNAME = "User";
+  const [nickname, setNickname] = useState(DEFAULT_NICKNAME);
+  const [guid, setGuid] = useState(0);
+  const GUID_SOURCE = "fireplace_guid"
 
-  const PLACEHOLDER_NAME = "Li Han";
+  useEffect(() => {
+    // Uncomment the bottom code to clear all values saved locally (to mimic first time opening the app)
+    // removeFew();
 
-  const QUESTIONS_AND_PROMPTS = [
-    {
-      question: `Hey ${PLACEHOLDER_NAME}, how are you feeling today?`,
-      prompt: `${PLACEHOLDER_NAME} is feeling`,
-    },
-    {
-      question: `What's up ${PLACEHOLDER_NAME}! What song is currently stuck in your head?`,
-      prompt: `${PLACEHOLDER_NAME} can't stop listening to`,
-    },
-    {
-      question: `Hello ${PLACEHOLDER_NAME}, any cravings now?`,
-      prompt: `${PLACEHOLDER_NAME} really needs some`,
-    },
-  ];
+    const setItem = async (value, source) => {
+      try {
+        await AsyncStorage.setItem(source, value)
+      } catch(e) {
+        alert(`Error saving ${value}`)
+      }
+      alert('Saved!')
+    }
+    const getGuidItem = async (source) => {
+      try {
+        const value = await AsyncStorage.getItem(source)
+        if (value !== null) {
+          alert(`found ${value}`)
+          setGuid(value);
+          setNickname("loaded from db")// TODO: LoadNickname from database using 'value' (user guid) and call setNickname(result)
+          return;
+        }
+        // if guid not found, user is new, initialize new uuid and redirect to edit nickname screen
+        alert(`${source} not found`)
+        const new_guid = uuidv4()
+        setItem(new_guid, GUID_SOURCE);
+        setGuid(new_guid);
+        // TODO: New user, save user_guid to database (if you want to save a nickname as well, can just use DEFAULT_NICKNAME)
+        navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
+      } catch(e) {
+        alert(`error reading ${source}`)
+        const new_guid = uuidv4()
+        setItem(new_guid, GUID_SOURCE);
+        setGuid(new_guid);
+        // TODO: New user, save user_guid to database (if you want to save a nickname as well, can just use DEFAULT_NICKNAME)
+        navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
+      }
+    }
 
-  const [questionPrompt, setQuestionPrompt] = useState(
-    QUESTIONS_AND_PROMPTS[
-      Math.floor(Math.random() * QUESTIONS_AND_PROMPTS.length)
-    ]
+    getGuidItem(GUID_SOURCE)
+  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params?.nickname && route.params.nickname != nickname) {
+        setNickname(route.params.nickname)
+        // TODO: Update nickname on database using 'guid' state value
+      }
+      return;
+    })
   );
+
+  let [fontsLoaded] = useFonts({
+    JosefinSans_300Light,
+  });
+
+  const [answer, setAnswer] = useState("")
+
+  const QUESTIONS = [
+    {
+      question: `Hey ${nickname}, how are you feeling today?`,
+      format: `${nickname} is feeling`,
+      input: <Rating handlePress={handlePress} answer={answer}></Rating>
+    },
+    {
+      question: `What's up ${nickname}! What song is currently stuck in your head?`,
+      format: `${nickname} can't stop listening to`,
+      input: <TextInput style={styles.input} placeholder="Mr. Brightside perhaps?" onChangeText={text => setAnswer(text)} value={answer} />
+    },
+    {
+      question: `Hello ${nickname}, any cravings now?`,
+      format: `${nickname} really needs some`,
+      input: <TextInput style={styles.input} placeholder="Mala Tang?" onChangeText={text => setAnswer(text)} value={answer} />
+    },
+  ]
+
+  const [curQuestionIndex, setCurQuestionIndex] = useState(0)
+
+  function handlePress(input) {
+    setAnswer(input)
+  }
+  
+  if (!fontsLoaded) {
+    return (<View style={styles.container}>
+    <Text style={styles.text}>Loading</Text>
+  </View>);
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{questionPrompt.question}</Text>
-      <Text style={styles.text}>Hello!</Text>
-      <Text style={styles.nickname}>Nickname: {nickname}</Text>
-      {/* <TextInput style={styles.nameInput} placeHolder="Jackalyn" value={this.state.name} /> */}
+      <Text style={styles.question}>{QUESTIONS[curQuestionIndex].question}</Text>
+      {QUESTIONS[curQuestionIndex].input}
+      
+      <Button
+        title="Chat now!"
+        onPress={() => {
+          navigation.navigate("Chat", {
+            question: QUESTIONS[curQuestionIndex],
+            answer: answer,
+          });
+        }}
+      ></Button>
       <Button
         title="View Loading Screen(??)"
         onPress={() => {
@@ -81,6 +154,12 @@ export default function HomeScreen({ navigation }) {
           </View>
         </TouchableOpacity>
       </View>
+      <Button
+        title="view matching screen"
+        onPress={() => {
+          navigation.navigate("Matchmaking");
+        }}
+      ></Button>
     </View>
   );
 }
@@ -88,16 +167,21 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff6c8",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff6c8',
+    alignItems: 'center', 
+    justifyContent: 'center',
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   nickname: {
     margin: 10,
     fontSize: 25,
   },
-  text: {
-    fontSize: 60,
+  question: {
+    fontSize: 22,
+    textAlign: 'center',
+    fontFamily: 'JosefinSans_300Light',
+    lineHeight: 30
   },
   chatButton: {
     backgroundColor: "#ffa553",
@@ -145,4 +229,24 @@ const styles = StyleSheet.create({
     color: "gray",
     marginLeft: 10,
   },
+  input: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: 'rgba(210, 151, 37, 0.17)',
+    width: '100%',
+    fontSize: 18,
+    borderRadius: 6,
+  }
 });
+
+const removeFew = async () => {
+  const keys = ['key', 'guid', 'fireplace_guid']
+  try {
+    await AsyncStorage.multiRemove(keys)
+  } catch(e) {
+    // remove error
+  }
+
+  alert('Done')
+}
