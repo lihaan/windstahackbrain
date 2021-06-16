@@ -4,7 +4,7 @@ import { useFonts, JosefinSans_500Medium } from '@expo-google-fonts/josefin-sans
 
 
 export default function EditNickname({navigation, route}) {
-  const [nickname, setNickname] = useState(route.params.nickname? route.params.nickname: "")
+  const [nickname, setNickname] = useState(route.params?.nickname? route.params.nickname: "")
 
   let [fontsLoaded] = useFonts({
     JosefinSans_500Medium,

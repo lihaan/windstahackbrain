@@ -88,16 +88,16 @@ export default function HomeScreen({ navigation, route }) {
     {
       question: `What's up ${nickname}! What song is currently stuck in your head?`,
       format: `${nickname} can't stop listening to`,
-      input: <TextInput style={styles.input} placeholder="Mr. Brightside perhaps?" onChangeText={text => setAnswer(text)} value={answer} />
+      input: <TextInput style={styles.input} placeholder="Mr. Brightside perhaps?" onChangeText={text => setAnswer(text)} value={String(answer)} />
     },
     {
       question: `Hello ${nickname}, any cravings now?`,
       format: `${nickname} really needs some`,
-      input: <TextInput style={styles.input} placeholder="Mala Tang?" onChangeText={text => setAnswer(text)} value={answer} />
+      input: <TextInput style={styles.input} placeholder="Mala Tang?" onChangeText={text => setAnswer(text)} value={String(answer)} />
     },
   ]
 
-  const [curQuestionIndex, setCurQuestionIndex] = useState(0)
+  const [curQuestionIndex, setCurQuestionIndex] = useState(Math.floor(Math.random() * QUESTIONS.length))
 
   function handlePress(input) {
     setAnswer(input)
@@ -153,7 +153,7 @@ export default function HomeScreen({ navigation, route }) {
         <TouchableOpacity
           style={styles.otherButton}
           onPress={() => {
-            navigation.navigate("Edit Nickname");
+            navigation.navigate("Edit Nickname", {nickname});
           }}
         >
           <View style={styles.viewRow}>
