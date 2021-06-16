@@ -23,6 +23,7 @@ export default function EditNickname({navigation, route}) {
       <TextInput
         style={styles.textInput}
         value={nickname}
+        placeholder={"You can change anytime!"}
         onChangeText={(newNickname) => setNickname(newNickname)}
       ></TextInput>
       <View style={styles.buttons}>

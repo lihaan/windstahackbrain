@@ -3,34 +3,60 @@ import { Text, View, Button, TextInput, StyleSheet } from "react-native";
 import { useFonts, JosefinSans_300Light } from '@expo-google-fonts/josefin-sans';
 import { Rating } from '../components/Rating.js';
 import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { uuidv4 } from "../functions/uuid_generator.js";
 
 // just a random homescreen in place
 export default function HomeScreen({ navigation, route }) {
   const DEFAULT_NICKNAME = "User";
   const [nickname, setNickname] = useState(DEFAULT_NICKNAME);
+  const [guid, setGuid] = useState(0);
+  const GUID_SOURCE = "fireplace_guid"
+
   useEffect(() => {
-    const getData = async () => {
+    // Uncomment the bottom code to clear all values saved locally (to mimic first time opening the app)
+    // removeFew();
+
+    const setItem = async (value, source) => {
       try {
-        const value = await AsyncStorage.getItem('@guid')
+        await AsyncStorage.setItem(source, value)
+      } catch(e) {
+        alert(`Error saving ${value}`)
+      }
+      alert('Saved!')
+    }
+    const getGuidItem = async (source) => {
+      try {
+        const value = await AsyncStorage.getItem(source)
         if (value !== null) {
           alert(`found ${value}`)
+          setGuid(value);
+          setNickname("loaded from db")// TODO: LoadNickname from database using 'value' (user guid) and call setNickname(result)
           return;
         }
-        alert("guid not found")
+        // if guid not found, user is new, initialize new uuid and redirect to edit nickname screen
+        alert(`${source} not found`)
+        const new_guid = uuidv4()
+        setItem(new_guid, GUID_SOURCE);
+        setGuid(new_guid);
+        navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
       } catch(e) {
-        alert("error reading guid")
+        alert(`error reading ${source}`)
+        const new_guid = uuidv4()
+        setItem(new_guid, GUID_SOURCE);
+        setGuid(new_guid);
+        navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
       }
     }
-    getData()
-    if (nickname==DEFAULT_NICKNAME) {
-      navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
-    }
+
+    getGuidItem(GUID_SOURCE)
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      if (route.params?.nickname) {
+      if (route.params?.nickname && route.params.nickname != nickname) {
         setNickname(route.params.nickname)
+        // TODO: Update nickname on database using 'guid' state value
       }
       return;
     })
@@ -41,10 +67,6 @@ export default function HomeScreen({ navigation, route }) {
   });
 
   const [answer, setAnswer] = useState("")
-
-  function checkName() {
-    return route.params?.nickname ? route.params.nickname : nickname
-  }
 
   const QUESTIONS = [
     {
@@ -141,3 +163,14 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   }
 });
+
+const removeFew = async () => {
+  const keys = ['key', 'guid', 'fireplace_guid']
+  try {
+    await AsyncStorage.multiRemove(keys)
+  } catch(e) {
+    // remove error
+  }
+
+  alert('Done')
+}
