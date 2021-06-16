@@ -24,20 +24,6 @@ import {
 import { Lato_400Regular } from "@expo-google-fonts/lato";
 
 export default function ChatScreen({ route }) {
-  // function hash() {
-  //   var h=0, i=0;
-  //   if(hash.arguments.length == 1) {
-  //     for(i=0; i<hash.arguments[0].length; i++) {
-  //       h = (h * 31 + hash.arguments[0].charCodeAt(i)) & 0xffffffff;
-  //     }
-  //   }
-  //   else {
-  //     for(i in hash.arguments) {
-  //       h ^= hash(hash.arguments[i]);
-  //     }
-  //   }
-  //   return h;
-  // }
 
   const [messages, setMessages] = useState([]);
   let [fontsLoaded] = useFonts({
@@ -45,8 +31,9 @@ export default function ChatScreen({ route }) {
     Lato_400Regular,
   });
   const systemtext =
-    "You've been matched with ___; You may start chatting!{'\n'}___ is feeling __";
+    `You've been matched with ${route.params.friend}; You may start chatting!`;
   // change the variable names to switch your POV, user1 <-> user2
+  db.collection.doc()
   const user1 = { _id: 1, name: "Jackalyn" },
     user2 = { _id: 2, name: "React Native" };
   // const chatid = hash(user1._id.toString, user2._id.toString);
