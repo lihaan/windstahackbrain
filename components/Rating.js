@@ -60,8 +60,8 @@ export function Rating({handlePress, answer}) {
 
 let styles = StyleSheet.create({
   symbol: {
-    height: 40,
-    width: 40,
+    height: 50,
+    width: 50,
     borderRadius: 50,
     backgroundColor: '#f9f9f9',
   },
@@ -69,6 +69,7 @@ let styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'space-evenly',
     width:"100%",
+    marginTop: 20,
   },
   image: {
     flex: 1,

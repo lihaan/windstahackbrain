@@ -9,6 +9,19 @@ export default function HomeScreen({ navigation, route }) {
   const DEFAULT_NICKNAME = "User";
   const [nickname, setNickname] = useState(DEFAULT_NICKNAME);
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@guid')
+        if (value !== null) {
+          alert(`found ${value}`)
+          return;
+        }
+        alert("guid not found")
+      } catch(e) {
+        alert("error reading guid")
+      }
+    }
+    getData()
     if (nickname==DEFAULT_NICKNAME) {
       navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
     }
@@ -125,5 +138,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(210, 151, 37, 0.17)',
     width: '100%',
     fontSize: 18,
+    borderRadius: 6,
   }
 });
