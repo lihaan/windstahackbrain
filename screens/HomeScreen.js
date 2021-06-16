@@ -131,7 +131,10 @@ export default function HomeScreen({ navigation, route }) {
       <TouchableOpacity
         style={styles.chatButton}
         onPress={() => {
-          navigation.navigate("Matchmaking", {guid});
+          navigation.navigate("Matchmaking", {guid}, {
+            question: QUESTIONS[curQuestionIndex],
+            answer: answer,
+          });
         }}
       >
         <Text style={styles.chatButtonText}>Find me a friend!</Text>

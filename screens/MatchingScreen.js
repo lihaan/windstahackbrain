@@ -6,6 +6,7 @@ import {
   View,
   ActivityIndicator,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { db } from "../firebase";
 
@@ -45,7 +46,7 @@ export default function MatchingScreen({ navigation, route }) {
 
   //     navigation.navigate("Chat", {current_user, friend});    
   // }, []);
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>You are almost there! Matching you up...</Text>
@@ -55,6 +56,12 @@ export default function MatchingScreen({ navigation, route }) {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Refresh!</Text>
       </TouchableOpacity>
+      <Button
+        title="           "
+        onPress={() => {
+          navigation.navigate("Chat", {current_user, friend});
+        }}
+      ></Button>
       <StatusBar style="auto" />
     </View>
   );
