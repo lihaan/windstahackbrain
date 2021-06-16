@@ -6,6 +6,7 @@ import {
   View,
   ActivityIndicator,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { db } from "../firebase";
 
@@ -26,7 +27,6 @@ export default function MatchingScreen({ navigation, route }) {
           console.log(doc.data())
         })
       })
-    })
   //         if (doc.data().guid != current_user_id) {
   //           setUnmatched([
   //             ...unmatched,
@@ -44,11 +44,11 @@ export default function MatchingScreen({ navigation, route }) {
   //       alert("Error getting documents: ", error);
   //     })
 
-  //     var idx = Math.floor(Math.random() * unmatched.length);
-  //     var friend = unmatched[idx].guid;
+      // var idx = Math.floor(Math.random() * unmatched.length);
+      // var friend = unmatched[idx].guid;
 
-  //     navigation.navigate("Chat", {current_user, friend});    
-  // }, []);
+      // navigation.navigate("Chat", {current_user, friend});    
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -59,6 +59,12 @@ export default function MatchingScreen({ navigation, route }) {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Refresh!</Text>
       </TouchableOpacity>
+      <Button
+        title="           "
+        onPress={() => {
+          navigation.navigate("Chat", {current_user, friend});
+        }}
+      ></Button>
       <StatusBar style="auto" />
     </View>
   );
