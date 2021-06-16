@@ -9,7 +9,6 @@ import { GiftedChat } from "react-native-gifted-chat";
 import promptScreen from "./promptScreen";
 
 export default function ChatScreen({ route }) {
-  const nickname = "jackalyn";
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
