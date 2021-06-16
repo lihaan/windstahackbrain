@@ -35,7 +35,6 @@ export default function ChatScreen({ route }) {
   // users
   const [user1, setUser1] = useState({ _id: 1, name: "Jackalyn" })
   const [user2, setUser2] = useState({ _id: 2, name: "React Native" })
-
   // const chatid = hash(user1._id.toString, user2._id.toString);
 
   useEffect(() => {
