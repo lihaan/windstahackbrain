@@ -39,12 +39,14 @@ export default function HomeScreen({ navigation, route }) {
         const new_guid = uuidv4()
         setItem(new_guid, GUID_SOURCE);
         setGuid(new_guid);
+        // TODO: New user, save user_guid to database (if you want to save a nickname as well, can just use DEFAULT_NICKNAME)
         navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
       } catch(e) {
         alert(`error reading ${source}`)
         const new_guid = uuidv4()
         setItem(new_guid, GUID_SOURCE);
         setGuid(new_guid);
+        // TODO: New user, save user_guid to database (if you want to save a nickname as well, can just use DEFAULT_NICKNAME)
         navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
       }
     }
