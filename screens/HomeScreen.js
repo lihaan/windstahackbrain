@@ -157,8 +157,8 @@ export default function HomeScreen({ navigation, route }) {
           }}
         >
           <View style={styles.viewRow}>
-            <Feather style={styles.icon} name="settings" />
-            <Text style={styles.otherButtonText}>Edit Nickname</Text>
+            <Feather style={styles.icon} name="edit-3" />
+            <Text style={styles.otherButtonText}>Nickname</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -222,9 +222,17 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 15,
     borderRadius: 30,
-    width: 170,
+    width: 120,
     //alignItems: "flex-end",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   otherButtonText: {
     fontSize: 15,
