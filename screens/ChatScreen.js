@@ -30,12 +30,12 @@ export default function ChatScreen({ route }) {
     JosefinSans_500Medium,
     Lato_400Regular,
   });
-  const systemtext =
-    `You've been matched with ${route.params.friend}; You may start chatting!`;
-  // change the variable names to switch your POV, user1 <-> user2
-  // db.collection.doc()
-  const user1 = { _id: 1, name: "Jackalyn" },
-    user2 = { _id: 2, name: "React Native" };
+  const systemtext = `You've been matched with ${route.params.friend}; You may start chatting!`;
+  
+  // users
+  const [user1, setUser1] = useState({ _id: 1, name: "Jackalyn" })
+  const [user2, setUser2] = useState({ _id: 2, name: "React Native" })
+
   // const chatid = hash(user1._id.toString, user2._id.toString);
 
   useEffect(() => {
@@ -53,6 +53,16 @@ export default function ChatScreen({ route }) {
         system: true,
       },
     ]);
+
+    // update users
+    var docRef1 = db.collection('users').doc(route.params?.current_user);
+    docRef1.get().then((doc) => {
+      setUser1({ _id: doc.data().guid, name: doc.data().nickname })
+    })
+    // var docRef2 = db.collection('users').doc(route.params?.friend);
+    // docRef2.get().then((doc) => {
+    //   setUser2({ _id: doc.data().guid, name: doc.data().nickname })
+    // })
   }, []);
 
   useLayoutEffect(() => {

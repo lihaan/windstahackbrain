@@ -17,34 +17,34 @@ export default function MatchingScreen({ navigation, route }) {
   const friend = "";
 
   // alert('here'+route.params?.guid )
-  // useEffect(() => {
-  //     var current_user_id = route.params?.guid;
+  useEffect(() => {
+      var current_user_id = route.params?.guid;
 
-  //     db.collection('users').where("chatting", "==", false).get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         if (doc.data().guid != current_user_id) {
-  //           setUnmatched([
-  //             ...unmatched,
-  //             {
-  //               chatting: doc.data().chatting,
-  //               guid: doc.data().guid,
-  //               nickname: doc.data().nickname,
-  //             },
-  //           ])
-  //           alert(doc.data().nickname + '\n' + doc.data().guid + '\n' + doc.data().chatting + '\n' + doc.data().random);
-  //         }
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       alert("Error getting documents: ", error);
-  //     })
+      db.collection('users').where("chatting", "==", false).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          if (doc.data().guid != current_user_id) {
+            // setUnmatched([
+            //   ...unmatched,
+            //   {
+            //     chatting: doc.data().chatting,
+            //     guid: doc.data().guid,
+            //     nickname: doc.data().nickname,
+            //   },
+            // ])
+            // alert(doc.data().nickname + '\n' + doc.data().guid + '\n' + doc.data().chatting + '\n' + doc.data().random);
+          }
+        });
+      })
+      .catch((error) => {
+        alert("Error getting documents: ", error);
+      })
 
-  //     var idx = Math.floor(Math.random() * unmatched.length);
-  //     var friend = unmatched[idx].guid;
+      // var idx = Math.floor(Math.random() * unmatched.length);
+      // var friend = unmatched[idx].guid;
 
-  //     navigation.navigate("Chat", {current_user, friend});    
-  // }, []);
+      // navigation.navigate("Chat", {current_user, friend});    
+  }, []);
 
   return (
     <View style={styles.container}>

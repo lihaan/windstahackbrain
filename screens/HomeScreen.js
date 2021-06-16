@@ -112,21 +112,23 @@ export default function HomeScreen({ navigation, route }) {
       <Text style={styles.question}>{QUESTIONS[curQuestionIndex].question}</Text>
       {QUESTIONS[curQuestionIndex].input}
       
-      <Button
+      {/* <Button
         title="Chat now!"
         onPress={() => {
           navigation.navigate("Chat", {
             question: QUESTIONS[curQuestionIndex],
             answer: answer,
+            current_user: guid,
+            friend: "cb3a2c2d-bef7-4bb0-b752-9f97c1e59334"
           });
         }}
-      ></Button>
-      <Button
+      ></Button> */}
+      {/* <Button
         title="View Loading Screen(??)"
         onPress={() => {
           navigation.navigate("Loading");
         }}
-      ></Button>
+      ></Button> */}
 
       <TouchableOpacity
         style={styles.chatButton}
