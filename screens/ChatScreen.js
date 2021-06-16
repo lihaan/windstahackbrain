@@ -42,6 +42,7 @@ export default function ChatScreen({ route }) {
     Lato_400Regular,
   });
   const systemtext = "You've been matched with ___; You may start chatting!{'\n'}___ is feeling __";
+  // change the variable names to switch your POV, user1 <-> user2
   const user1 = { _id: 1, name: 'Jackalyn' }, user2 = { _id: 2, name: 'React Native' };
   // const chatid = hash(user1._id.toString, user2._id.toString);
 
@@ -60,15 +61,6 @@ export default function ChatScreen({ route }) {
         system: true,
       },
     ]);
-
-    // console.log(messages.length)
-
-    // var i;
-    // for (i = 0; i < messages.length; i++) {
-    //   console.log(i);
-    //   const { _id, createdAt, text, user } = messages[i]
-    //   db.collection('chats').add({ _id, createdAt, text, user, hello:'yo' })
-    // }
   }, []);
 
   useLayoutEffect(() => {
