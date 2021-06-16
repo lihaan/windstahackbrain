@@ -167,16 +167,26 @@ export default function ChatScreen({ route }) {
   const [prompt1, setPrompt1] = useState(prompts[firstI]);
   const [prompt2, setPrompt2] = useState(prompts[secondI]);
 
+  const [inputTextValue, setInputTextValue] = useState("");
+
   //show modal
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
   const containerStyle = { backgroundColor: "white", paddingHorizontal: 10, paddingVertical: 20, marginHorizontal: 16, borderRadius: 6 };
 
-  function renderAdd() {
+  function hideModalAndAutofill(promptValue) {
+    hideModal();
+    setInputTextValue(promptValue);
+  }
+
+  function renderAdd(promptState) {
     return (
-      <View style={styles.addButton}>
-        <Feather name="plus-circle" size={20} color="#666666" />
-      </View>
+      <TouchableOpacity onPress={()=>hideModalAndAutofill(promptState.prompt)} style={styles.promptButton}>
+        <Text style={styles.promptText}>{promptState.prompt}</Text>
+        <View style={styles.addButton}>
+          <Feather name="plus-circle" size={20} color="#666666" />
+        </View>
+      </TouchableOpacity>
     );
   }
 
@@ -189,42 +199,26 @@ export default function ChatScreen({ route }) {
   return (
     <Provider>
       <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={hideModal}
-          contentContainerStyle={containerStyle}
-        >
+        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
           <Text style={styles.promptTitle}>Choose a Prompt!</Text>
-          <TouchableOpacity onPress={hideModal} style={styles.promptButton}>
-            <Text style={styles.promptText}>
-            {prompt1.prompt}
-            </Text>
-            {renderAdd()}
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={hideModal} style={styles.promptButton}>
-            <Text style={styles.promptText}>
-            {prompt2.prompt}
-            </Text>
-            {renderAdd()}
-          </TouchableOpacity>
+          {renderAdd(prompt1)}
+          {renderAdd(prompt2)}
         </Modal>
       </Portal>
       <Button style={{ marginTop: 30 }} onPress={showModal}>
-        <MaterialCommunityIcons
-          name="lightbulb-on-outline"
-          size={24}
-          color="black"
-        />
+        <MaterialCommunityIcons name="lightbulb-on-outline" size={24} color="black" />
       </Button>
       <GiftedChat
         // text={ '' }
         // onInputTextChanged={ text => setCustomText(text) }
-        messages={ messages }
-        onSend={ messages => onSend(messages) }
-        user={ user1 }
-        showAvatarForEveryMessage={ true }
-        renderSystemMessage={ customSystemMessage }
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={user1}
+        showAvatarForEveryMessage={true}
+        renderSystemMessage={customSystemMessage}
+        textInputProps={{value:inputTextValue}}
+        onInputTextChanged={(value)=>setInputTextValue(value)}
+        alwaysShowSend={Boolean(inputTextValue)}
       />
     </Provider>
   );
