@@ -16,10 +16,16 @@ import { GiftedChat } from "react-native-gifted-chat";
 import { Modal, Portal, Button, Provider } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { useFonts, JosefinSans_500Medium } from '@expo-google-fonts/josefin-sans';
+import { Lato_400Regular } from '@expo-google-fonts/lato';
 
 export default function ChatScreen({ route }) {
   const nickname = "jackalyn";
   const [messages, setMessages] = useState([]);
+  let [fontsLoaded] = useFonts({
+    JosefinSans_500Medium,
+    Lato_400Regular,
+  });
 
   useEffect(() => {
     setMessages([
@@ -134,7 +140,21 @@ export default function ChatScreen({ route }) {
   //show modal
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-  const containerStyle = { backgroundColor: "white", padding: 20 };
+  const containerStyle = { backgroundColor: "white", paddingHorizontal: 10, paddingVertical: 20, marginHorizontal: 16, borderRadius: 6 };
+
+  function renderAdd() {
+    return (
+      <View style={styles.addButton}>
+        <Feather name="plus-circle" size={20} color="#666666" />
+      </View>
+    );
+  }
+
+  if (!fontsLoaded) {
+    return (<View style={styles.container}>
+    <Text>Loading</Text>
+  </View>);
+  }
 
   return (
     <Provider>
@@ -145,24 +165,19 @@ export default function ChatScreen({ route }) {
           contentContainerStyle={containerStyle}
         >
           <Text style={styles.promptTitle}>Choose a Prompt!</Text>
-          <Text style={styles.prompt1}>
+          <TouchableOpacity onPress={hideModal} style={styles.promptButton}>
+            <Text style={styles.promptText}>
             {prompt1.prompt}
-            <TouchableOpacity onPress={hideModal} style={styles.promptButton}>
-              <Feather name="plus-circle" size={24} color="black" />
-            </TouchableOpacity>
-          </Text>
+            </Text>
+            {renderAdd()}
+          </TouchableOpacity>
 
-          <Text style={styles.prompt2}>
+          <TouchableOpacity onPress={hideModal} style={styles.promptButton}>
+            <Text style={styles.promptText}>
             {prompt2.prompt}
-            <TouchableOpacity onPress={hideModal}>
-              <Feather
-                style={styles.addButton}
-                name="plus-circle"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </Text>
+            </Text>
+            {renderAdd()}
+          </TouchableOpacity>
         </Modal>
       </Portal>
       <Button style={{ marginTop: 30 }} onPress={showModal}>
@@ -177,7 +192,7 @@ export default function ChatScreen({ route }) {
         onSend={(messages) => onSend(messages)}
         user={{
           _id: 1,
-          // name: 'Jack',
+          name: 'Jack',
         }}
         showAvatarForEveryMessage={true}
         renderSystemMessage={customSystemMessage}
@@ -201,17 +216,22 @@ const styles = StyleSheet.create({
   promptTitle: {
     alignSelf: "center",
     fontSize: 20,
+    fontFamily: 'JosefinSans_500Medium',
+    marginBottom: 20
   },
-  prompt1: {
+  promptText: {
     fontSize: 15,
+    flex: 6,
+    fontFamily: 'Lato_400Regular',
+    lineHeight: 21
   },
-  prompt2: {
-    marginTop: 40,
-    fontSize: 15,
+  addButton: {
+    flex: 1,
+    alignItems: "flex-end"
   },
   promptButton: {
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

@@ -96,7 +96,7 @@ export default function HomeScreen({ navigation, route }) {
   
   if (!fontsLoaded) {
     return (<View style={styles.container}>
-    <Text style={styles.text}>Loading</Text>
+    <Text>Loading</Text>
   </View>);
   }
 
