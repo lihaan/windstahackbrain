@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,19 +7,41 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
+import { db } from "../firebase";
 
-export default function MatchingScreen() {
+export default function MatchingScreen({ navigation, route }) {
   const [loading, setLoading] = useState(true);
+  const [unmatched, setUnmatched] = useState([]);
 
-  // useEffect(() => {
-  //   loadMatchingResult();
-  // });
+  // alert('here'+route.params?.guid )
+  useEffect(() => {
+      var current_user_id = route.params?.guid;
 
-  // async function loadMatchingResult() {
-  //   const response = await fetch();
-  //   const responseData = await response.json();
-  //   console.log(responseData);
-  // }
+      db.collection('users').where("chatting", "==", false).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          if (doc.data().guid != current_user_id) {
+            setUnmatched([
+              ...unmatched,
+              {
+                chatting: doc.data().chatting,
+                guid: doc.data().guid,
+                nickname: doc.data().nickname,
+              },
+            ])
+            alert(doc.data().nickname + '\n' + doc.data().guid + '\n' + doc.data().chatting + '\n' + doc.data().random);
+          }
+        });
+      })
+      .catch((error) => {
+        alert("Error getting documents: ", error);
+      })
+
+      var idx = Math.floor(Math.random() * unmatched.length);
+      var friend = unmatched[idx].guid;
+
+      navigation.navigate("Chat", {current_user, friend});    
+  }, []);
 
   return (
     <View style={styles.container}>

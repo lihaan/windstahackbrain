@@ -13,7 +13,7 @@ export default function HomeScreen({ navigation, route }) {
   const DEFAULT_NICKNAME = "User";
   const [nickname, setNickname] = useState(DEFAULT_NICKNAME);
   const [guid, setGuid] = useState(0);
-  const GUID_SOURCE = "fireplace_guid"
+  const GUID_SOURCE = "fireplace_guid";
 
   useEffect(() => {
     // Uncomment the bottom code to clear all values saved locally (to mimic first time opening the app)
@@ -23,17 +23,16 @@ export default function HomeScreen({ navigation, route }) {
       try {
         await AsyncStorage.setItem(source, value)
       } catch(e) {
-        alert(`Error saving ${value}`)
+        // alert(`Error saving ${value}`)
       }
-      alert('Saved!')
+      // alert('Saved!')
     }
     const getGuidItem = async (source) => {
-      try {
+      try { // returning device, load nickname from database
         const value = await AsyncStorage.getItem(source)
         if (value !== null) {
-          alert(`found ${value}`)
+          // alert(`found ${value}`)
           setGuid(value);
-          // DONE: LoadNickname from database using 'value' (user guid) and call setNickname(result)
           var docRef = db.collection('users').doc(value);
           docRef.get().then((doc) => {
             setNickname(doc.data().nickname)
@@ -41,20 +40,19 @@ export default function HomeScreen({ navigation, route }) {
           return;
         }
         // if guid not found, user is new, initialize new uuid and redirect to edit nickname screen
-        alert(`${source} not found`)
+        // alert(`${source} not found`)
         const new_guid = uuidv4()
         setItem(new_guid, GUID_SOURCE);
         setGuid(new_guid);
-        // DONE: New user, save to database
-        db.collection('users').doc(new_guid).set({ guid: new_guid, nickname: DEFAULT_NICKNAME });
+        db.collection('users').doc(new_guid).set({ guid: new_guid, nickname: DEFAULT_NICKNAME, chatting: false });
         navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
       } catch(e) {
-        alert(`error reading ${source}`)
+        // new device v2
+        // alert(`error reading ${source}`)
         const new_guid = uuidv4()
         setItem(new_guid, GUID_SOURCE);
         setGuid(new_guid);
-        // DONE: New user, save to database
-        db.collection('users').doc(new_guid).set({ guid: new_guid, nickname: DEFAULT_NICKNAME });
+        db.collection('users').doc(new_guid).set({ guid: new_guid, nickname: DEFAULT_NICKNAME, chatting: false });
         navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
       }
     }
@@ -63,10 +61,10 @@ export default function HomeScreen({ navigation, route }) {
   }, []);
 
   useFocusEffect(
+    // user updated nickname
     React.useCallback(() => {
       if (route.params?.nickname && route.params.nickname != nickname) {
         setNickname(route.params.nickname)
-        //DONE: Update nickname on database
         db.collection('users').doc(guid).update({ nickname: route.params.nickname }) 
       }
       return;
@@ -129,10 +127,11 @@ export default function HomeScreen({ navigation, route }) {
           navigation.navigate("Loading");
         }}
       ></Button>
+
       <TouchableOpacity
         style={styles.chatButton}
         onPress={() => {
-          navigation.navigate("Chat");
+          navigation.navigate("Matchmaking", {guid});
         }}
       >
         <Text style={styles.chatButtonText}>Find me a friend!</Text>
@@ -162,12 +161,6 @@ export default function HomeScreen({ navigation, route }) {
           </View>
         </TouchableOpacity>
       </View>
-      <Button
-        title="view matching screen"
-        onPress={() => {
-          navigation.navigate("Matchmaking");
-        }}
-      ></Button>
     </View>
   );
 }
@@ -264,5 +257,5 @@ const removeFew = async () => {
     // remove error
   }
 
-  alert('Done')
+  // alert('Done')
 }

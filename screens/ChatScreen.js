@@ -64,7 +64,7 @@ export default function ChatScreen({ route }) {
   }, []);
 
   useLayoutEffect(() => {
-    const dbmessages = db.collection('chats')//.doc(chatid)
+    const unsubscribe = db.collection('chats')//.doc(chatid)
     .orderBy('createdAt', 'desc')
     .onSnapshot(snapshot => setMessages(
       snapshot.docs.map(doc => ({
@@ -74,7 +74,7 @@ export default function ChatScreen({ route }) {
         user: doc.data().user,
       }))
     ));
-    return dbmessages;
+    return unsubscribe;
   }, [])
 
   const onSend = useCallback((messages = []) => {
