@@ -17,12 +17,16 @@ export default function MatchingScreen({ navigation, route }) {
   const friend = "";
 
   // alert('here'+route.params?.guid )
-  // useEffect(() => {
-  //     var current_user_id = route.params?.guid;
+  useEffect(() => {
+      var current_user_id = route.params?.guid;
 
-  //     db.collection('users').where("chatting", "==", false).get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
+      db.collection('users').where("chatting", "==", false).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data())
+        })
+      })
+    })
   //         if (doc.data().guid != current_user_id) {
   //           setUnmatched([
   //             ...unmatched,
