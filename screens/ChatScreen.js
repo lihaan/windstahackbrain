@@ -13,6 +13,7 @@ import {
   Keyboard,
 } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
+import { db } from "../firebase";
 import { Modal, Portal, Button, Provider } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -20,12 +21,29 @@ import { useFonts, JosefinSans_500Medium } from '@expo-google-fonts/josefin-sans
 import { Lato_400Regular } from '@expo-google-fonts/lato';
 
 export default function ChatScreen({ route }) {
-  const nickname = "jackalyn";
+  // function hash() {
+  //   var h=0, i=0;
+  //   if(hash.arguments.length == 1) {
+  //     for(i=0; i<hash.arguments[0].length; i++) {
+  //       h = (h * 31 + hash.arguments[0].charCodeAt(i)) & 0xffffffff;
+  //     }
+  //   }
+  //   else {
+  //     for(i in hash.arguments) {
+  //       h ^= hash(hash.arguments[i]);
+  //     }
+  //   }
+  //   return h;
+  // }
+
   const [messages, setMessages] = useState([]);
   let [fontsLoaded] = useFonts({
     JosefinSans_500Medium,
     Lato_400Regular,
   });
+  const systemtext = "You've been matched with ___; You may start chatting!{'\n'}___ is feeling __";
+  const user1 = { _id: 1, name: 'Jackalyn' }, user2 = { _id: 2, name: 'React Native' };
+  // const chatid = hash(user1._id.toString, user2._id.toString);
 
   useEffect(() => {
     setMessages([
@@ -33,41 +51,53 @@ export default function ChatScreen({ route }) {
         _id: 4,
         text: "Hello developer!",
         createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-        },
-      },
-      {
-        _id: 3,
-        text: "Hello !",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-        },
+        user: user2,
       },
       {
         _id: 1,
+        text: {systemtext},
         createdAt: new Date(),
         system: true,
       },
     ]);
+
+    // console.log(messages.length)
+
+    // var i;
+    // for (i = 0; i < messages.length; i++) {
+    //   console.log(i);
+    //   const { _id, createdAt, text, user } = messages[i]
+    //   db.collection('chats').add({ _id, createdAt, text, user, hello:'yo' })
+    // }
   }, []);
+
+  useLayoutEffect(() => {
+    const dbmessages = db.collection('chats')//.doc(chatid)
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snapshot => setMessages(
+      snapshot.docs.map(doc => ({
+        _id: doc.data()._id,
+        createdAt: doc.data().createdAt.toDate(),
+        text: doc.data().text,
+        user: doc.data().user,
+      }))
+    ));
+    return dbmessages;
+  }, [])
 
   const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
+    
+    const { _id, createdAt, text, user, } = messages[0]
+    db.collection('chats').add({ _id, createdAt, text, user, friend: user2 })
   }, []);
 
   const customSystemMessage = (props) => {
     return (
       <View style={styles.systemMessageContainer}>
-        <Text style={styles.systemMessageText}>
-          You've been matched with ___; You may start chatting!{"\n"}
-          ___ is feeling __
-        </Text>
+        <Text style={styles.systemMessageText}>{ systemtext }</Text>
       </View>
     );
   };
@@ -188,14 +218,13 @@ export default function ChatScreen({ route }) {
         />
       </Button>
       <GiftedChat
-        messages={messages}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: 1,
-          name: 'Jack',
-        }}
-        showAvatarForEveryMessage={true}
-        renderSystemMessage={customSystemMessage}
+        // text={ '' }
+        // onInputTextChanged={ text => setCustomText(text) }
+        messages={ messages }
+        onSend={ messages => onSend(messages) }
+        user={ user1 }
+        showAvatarForEveryMessage={ true }
+        renderSystemMessage={ customSystemMessage }
       />
     </Provider>
   );

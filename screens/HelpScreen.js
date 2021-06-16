@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     
   },
   sectionTitle: {
-    backgroundColor: "lightgrey",
+    backgroundColor: "#ffa553",
     width: "100%",
     height: 50,
     borderBottomColor: "black",
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   row: {
-    backgroundColor: "#fff",
+    backgroundColor: "#fffec6",
   },
   rowNameText: {
     fontSize: 18,

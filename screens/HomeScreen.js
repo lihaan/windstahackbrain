@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, Button, TextInput, StyleSheet } from "react-native";
+import { Text, View, Button, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { useFonts, JosefinSans_300Light } from '@expo-google-fonts/josefin-sans';
 import { Rating } from '../components/Rating.js';
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { uuidv4 } from "../functions/uuid_generator.js";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 // just a random homescreen in place
 export default function HomeScreen({ navigation, route }) {
@@ -120,12 +121,39 @@ export default function HomeScreen({ navigation, route }) {
           navigation.navigate("Loading");
         }}
       ></Button>
-      <Button
-        title="Edit Nickname"
+      <TouchableOpacity
+        style={styles.chatButton}
         onPress={() => {
-          navigation.navigate("Edit Nickname", { nickname });
+          navigation.navigate("Chat");
         }}
-      ></Button>
+      >
+        <Text style={styles.chatButtonText}>Find me a friend!</Text>
+      </TouchableOpacity>
+
+      <View style={styles.viewRow}>
+        <TouchableOpacity
+          style={styles.otherButton}
+          onPress={() => {
+            navigation.navigate("Helplines");
+          }}
+        >
+          <View style={styles.viewRow}>
+            <AntDesign style={styles.icon} name="phone" />
+            <Text style={styles.otherButtonText}>Helplines</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.otherButton}
+          onPress={() => {
+            navigation.navigate("Edit Nickname");
+          }}
+        >
+          <View style={styles.viewRow}>
+            <Feather style={styles.icon} name="settings" />
+            <Text style={styles.otherButtonText}>Edit Nickname</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <Button
         title="view matching screen"
         onPress={() => {
@@ -154,6 +182,52 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'JosefinSans_300Light',
     lineHeight: 30
+  },
+  chatButton: {
+    backgroundColor: "#ffa553",
+    padding: 10,
+    margin: 15,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  viewRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  chatButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  otherButton: {
+    backgroundColor: "white",
+    //flex: 1,
+    padding: 10,
+    margin: 15,
+    borderRadius: 30,
+    width: 170,
+    //alignItems: "flex-end",
+    justifyContent: "center",
+  },
+  otherButtonText: {
+    fontSize: 15,
+    color: "gray",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  icon: {
+    fontSize: 18,
+    color: "gray",
+    marginLeft: 10,
   },
   input: {
     marginTop: 20,
