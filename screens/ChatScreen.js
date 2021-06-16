@@ -17,6 +17,8 @@ import { db } from "../firebase";
 import { Modal, Portal, Button, Provider } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { useFonts, JosefinSans_500Medium } from '@expo-google-fonts/josefin-sans';
+import { Lato_400Regular } from '@expo-google-fonts/lato';
 
 export default function ChatScreen({ route }) {
   // function hash() {
@@ -35,7 +37,12 @@ export default function ChatScreen({ route }) {
   // }
 
   const [messages, setMessages] = useState([]);
+  let [fontsLoaded] = useFonts({
+    JosefinSans_500Medium,
+    Lato_400Regular,
+  });
   const systemtext = "You've been matched with ___; You may start chatting!{'\n'}___ is feeling __";
+  // change the variable names to switch your POV, user1 <-> user2
   const user1 = { _id: 1, name: 'Jackalyn' }, user2 = { _id: 2, name: 'React Native' };
   // const chatid = hash(user1._id.toString, user2._id.toString);
 
@@ -54,15 +61,6 @@ export default function ChatScreen({ route }) {
         system: true,
       },
     ]);
-
-    // console.log(messages.length)
-
-    // var i;
-    // for (i = 0; i < messages.length; i++) {
-    //   console.log(i);
-    //   const { _id, createdAt, text, user } = messages[i]
-    //   db.collection('chats').add({ _id, createdAt, text, user, hello:'yo' })
-    // }
   }, []);
 
   useLayoutEffect(() => {
@@ -161,56 +159,58 @@ export default function ChatScreen({ route }) {
   const [prompt1, setPrompt1] = useState(prompts[firstI]);
   const [prompt2, setPrompt2] = useState(prompts[secondI]);
 
+  const [inputTextValue, setInputTextValue] = useState("");
+
   //show modal
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-  const containerStyle = { backgroundColor: "white", padding: 20 };
+  const containerStyle = { backgroundColor: "white", paddingHorizontal: 10, paddingVertical: 20, marginHorizontal: 16, borderRadius: 6 };
+
+  function hideModalAndAutofill(promptValue) {
+    hideModal();
+    setInputTextValue(promptValue);
+  }
+
+  function renderAdd(promptState) {
+    return (
+      <TouchableOpacity onPress={()=>hideModalAndAutofill(promptState.prompt)} style={styles.promptButton}>
+        <Text style={styles.promptText}>{promptState.prompt}</Text>
+        <View style={styles.addButton}>
+          <Feather name="plus-circle" size={20} color="#666666" />
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  if (!fontsLoaded) {
+    return (<View style={styles.container}>
+    <Text>Loading</Text>
+  </View>);
+  }
 
   return (
     <Provider>
       <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={hideModal}
-          contentContainerStyle={containerStyle}
-        >
+        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
           <Text style={styles.promptTitle}>Choose a Prompt!</Text>
-          <Text style={styles.prompt1}>
-            {prompt1.prompt}
-            <TouchableOpacity onPress={hideModal} style={styles.promptButton}>
-              <Feather name="plus-circle" size={24} color="black" />
-            </TouchableOpacity>
-          </Text>
-
-          <Text style={styles.prompt2}>
-            {prompt2.prompt}
-            <TouchableOpacity onPress={hideModal}>
-              <Feather
-                style={styles.addButton}
-                name="plus-circle"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </Text>
+          {renderAdd(prompt1)}
+          {renderAdd(prompt2)}
         </Modal>
       </Portal>
       <Button style={{ marginTop: 30 }} onPress={showModal}>
-        <MaterialCommunityIcons
-          name="lightbulb-on-outline"
-          size={24}
-          color="black"
-        />
+        <MaterialCommunityIcons name="lightbulb-on-outline" size={24} color="black" />
       </Button>
       <GiftedChat
         // text={ '' }
         // onInputTextChanged={ text => setCustomText(text) }
-        leftControlBar={ <Text>Helfoiewjfo</Text> }
-        messages={ messages }
-        onSend={ messages => onSend(messages) }
-        user={ user1 }
-        showAvatarForEveryMessage={ true }
-        renderSystemMessage={ customSystemMessage }
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={user1}
+        showAvatarForEveryMessage={true}
+        renderSystemMessage={customSystemMessage}
+        textInputProps={{value:inputTextValue}}
+        onInputTextChanged={(value)=>setInputTextValue(value)}
+        alwaysShowSend={Boolean(inputTextValue)}
       />
     </Provider>
   );
@@ -231,17 +231,22 @@ const styles = StyleSheet.create({
   promptTitle: {
     alignSelf: "center",
     fontSize: 20,
+    fontFamily: 'JosefinSans_500Medium',
+    marginBottom: 20
   },
-  prompt1: {
+  promptText: {
     fontSize: 15,
+    flex: 6,
+    fontFamily: 'Lato_400Regular',
+    lineHeight: 21
   },
-  prompt2: {
-    marginTop: 40,
-    fontSize: 15,
+  addButton: {
+    flex: 1,
+    alignItems: "flex-end"
   },
   promptButton: {
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
