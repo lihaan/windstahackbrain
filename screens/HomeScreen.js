@@ -6,6 +6,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { uuidv4 } from "../functions/uuid_generator.js";
 import { AntDesign, Feather } from "@expo/vector-icons";
+import { db } from "../firebase.js";
 
 // just a random homescreen in place
 export default function HomeScreen({ navigation, route }) {
@@ -32,7 +33,11 @@ export default function HomeScreen({ navigation, route }) {
         if (value !== null) {
           alert(`found ${value}`)
           setGuid(value);
-          setNickname("loaded from db")// TODO: LoadNickname from database using 'value' (user guid) and call setNickname(result)
+          // DONE: LoadNickname from database using 'value' (user guid) and call setNickname(result)
+          var docRef = db.collection('users').doc(value);
+          docRef.get().then((doc) => {
+            setNickname(doc.data().nickname)
+          })
           return;
         }
         // if guid not found, user is new, initialize new uuid and redirect to edit nickname screen
@@ -40,14 +45,16 @@ export default function HomeScreen({ navigation, route }) {
         const new_guid = uuidv4()
         setItem(new_guid, GUID_SOURCE);
         setGuid(new_guid);
-        // TODO: New user, save user_guid to database (if you want to save a nickname as well, can just use DEFAULT_NICKNAME)
+        // DONE: New user, save to database
+        db.collection('users').doc(new_guid).set({ guid: new_guid, nickname: DEFAULT_NICKNAME });
         navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
       } catch(e) {
         alert(`error reading ${source}`)
         const new_guid = uuidv4()
         setItem(new_guid, GUID_SOURCE);
         setGuid(new_guid);
-        // TODO: New user, save user_guid to database (if you want to save a nickname as well, can just use DEFAULT_NICKNAME)
+        // DONE: New user, save to database
+        db.collection('users').doc(new_guid).set({ guid: new_guid, nickname: DEFAULT_NICKNAME });
         navigation.navigate("Edit Nickname", {nickname: nickname==DEFAULT_NICKNAME? null : nickname})
       }
     }
@@ -59,7 +66,8 @@ export default function HomeScreen({ navigation, route }) {
     React.useCallback(() => {
       if (route.params?.nickname && route.params.nickname != nickname) {
         setNickname(route.params.nickname)
-        // TODO: Update nickname on database using 'guid' state value
+        //DONE: Update nickname on database
+        db.collection('users').doc(guid).update({ nickname: route.params.nickname }) 
       }
       return;
     })
@@ -80,16 +88,16 @@ export default function HomeScreen({ navigation, route }) {
     {
       question: `What's up ${nickname}! What song is currently stuck in your head?`,
       format: `${nickname} can't stop listening to`,
-      input: <TextInput style={styles.input} placeholder="Mr. Brightside perhaps?" onChangeText={text => setAnswer(text)} value={answer} />
+      input: <TextInput style={styles.input} placeholder="Mr. Brightside perhaps?" onChangeText={text => setAnswer(text)} value={String(answer)} />
     },
     {
       question: `Hello ${nickname}, any cravings now?`,
       format: `${nickname} really needs some`,
-      input: <TextInput style={styles.input} placeholder="Mala Tang?" onChangeText={text => setAnswer(text)} value={answer} />
+      input: <TextInput style={styles.input} placeholder="Mala Tang?" onChangeText={text => setAnswer(text)} value={String(answer)} />
     },
   ]
 
-  const [curQuestionIndex, setCurQuestionIndex] = useState(0)
+  const [curQuestionIndex, setCurQuestionIndex] = useState(Math.floor(Math.random() * QUESTIONS.length))
 
   function handlePress(input) {
     setAnswer(input)
@@ -145,12 +153,12 @@ export default function HomeScreen({ navigation, route }) {
         <TouchableOpacity
           style={styles.otherButton}
           onPress={() => {
-            navigation.navigate("Edit Nickname");
+            navigation.navigate("Edit Nickname", {nickname});
           }}
         >
           <View style={styles.viewRow}>
-            <Feather style={styles.icon} name="settings" />
-            <Text style={styles.otherButtonText}>Edit Nickname</Text>
+            <Feather style={styles.icon} name="edit-3" />
+            <Text style={styles.otherButtonText}>Nickname</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -214,9 +222,17 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 15,
     borderRadius: 30,
-    width: 170,
+    width: 120,
     //alignItems: "flex-end",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   otherButtonText: {
     fontSize: 15,
